@@ -8,8 +8,8 @@ app.post('/api/authentication/login',(req,res)=>{
         password : req.query.password,
         email : req.query.email
     }]
+    
     const [user] = datas
-
     const authUser = datas.find(data => data.username == user.username && data.password == user.password)
         if(authUser){
             res.json({
@@ -20,7 +20,6 @@ app.post('/api/authentication/login',(req,res)=>{
                 "message" : "Gagal Login"
             })
         }
-
 })
 
 app.listen(3000,()=>{
