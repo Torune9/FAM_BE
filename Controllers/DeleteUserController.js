@@ -8,15 +8,14 @@ const DeleteController = async (req,res)=>{
 
         if(!deleteUser) {
             res.json({
-                "message" : `User dengan username : ${username} tidak ditemukan`
+                "message" : `User dengan username : ${username} atau role ${username} : ${roleId} tidak ditemukan`
             })
         }
 
         deleteUser.destroy()
-
         res.json({
             "message" : "Data berhasil di hapus",
-            "deletedAt" : deleteUser.updatedAt
+            "deletedAt" : new Date()
         })
     }catch(err){
             console.log(err);
