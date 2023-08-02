@@ -2,7 +2,7 @@ const {Admin,User} = require('../models')
 const ForgotController = async (req,res)=>{
     try{
         const data = await User.findAll()
-        const {email,newPassword} = req.body
+        const {email} = req.body
         const user = data.find((user)=>user.email == email)
     if(user){
         res.json({
