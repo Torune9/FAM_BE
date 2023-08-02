@@ -4,7 +4,7 @@ const ForgotContoller = require('../Controllers/ForgotController')
 const ResetController = require('../Controllers/ResetController')
 const AddUserController = require('../Controllers/AddUserController')
 const updateUserController = require('../Controllers/UpdateUserController')
-const DeleteController = require('../Controllers/DeleteController')
+const DeleteController = require('../Controllers/DeleteUserController')
 
 router.post('/api/add',AddUserController.AddUserController)
 
