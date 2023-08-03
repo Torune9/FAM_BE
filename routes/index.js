@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const LoginController = require('../Controllers/LoginController')
-const ForgotContoller = require('../Controllers/ForgotController')
-const ResetController = require('../Controllers/ResetController')
-const AddUserController = require('../Controllers/AddUserController')
-const updateUserController = require('../Controllers/UpdateUserController')
-const DeleteController = require('../Controllers/DeleteUserController')
+const LoginController = require('../Controllers/Action/LoginController')
+const ForgotContoller = require('../Controllers/Action/ForgotController')
+const ResetController = require('../Controllers/Action/ResetController')
+const AddUserController = require('../Controllers/User/AddUserController')
+const updateUserController = require('../Controllers/User/UpdateUserController')
+const DeleteController = require('../Controllers/User/DeleteUserController')
 
 router.post('/api/add',AddUserController.AddUserController)
 

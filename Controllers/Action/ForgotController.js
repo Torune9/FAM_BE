@@ -1,4 +1,4 @@
-const {Admin,User} = require('../models')
+const {Admin,User} = require('../../models')
 const ForgotController = async (req,res)=>{
     try{
         const data = await User.findAll()

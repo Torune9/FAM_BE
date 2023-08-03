@@ -1,9 +1,8 @@
-const {Admin,User} = require('../models')
+const {Admin,User} = require('../../models')
 
 const AddUserController = async (req,res)=>{
     try{
         const {username,password,email} = req.body
-
     if (username.trim() == "" || password.trim() == "") {
         res.send("Username dan Password tidak boleh")
     }

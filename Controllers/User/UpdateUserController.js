@@ -1,4 +1,4 @@
-const {Admin,User} = require('../models')
+const {Admin,User} = require('../../models')
 
 const updateUserController = async (req,res)=>{
     try{

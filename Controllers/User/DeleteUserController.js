@@ -1,4 +1,4 @@
-const {Admin,User} = require('../models')
+const {Admin,User} = require('../../models')
 
 const DeleteController = async (req,res)=>{
     try{
