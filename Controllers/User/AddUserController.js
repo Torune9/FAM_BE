@@ -1,12 +1,19 @@
 const {Admin,User} = require('../../models')
+const bcrypt = require('bcrypt')
 
 const AddUserController = async (req,res)=>{
     try{
         const {username,password,email} = req.body
+        const hasPw = await bcrypt.hash(password,10)
     if (username.trim() == "" || password.trim() == "") {
         res.send("Username dan Password tidak boleh")
     }
-        const newUSer = await User.create({username:username,password:password,email:email})
+        const user = {
+            username : username,
+            password:hasPw,
+            email : email
+        } 
+        const newUSer = await User.create(user)
         res.json({
             "message" : "Data berhasil dibuat",
             "status" : res.statusCode,

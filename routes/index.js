@@ -18,5 +18,4 @@ router.post('/api/forgot',ForgotContoller.ForgotController)
 
 router.post('/api/reset',ResetController.ResetController)
 
-
 module.exports = router
