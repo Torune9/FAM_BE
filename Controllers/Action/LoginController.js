@@ -4,9 +4,9 @@ const jwt = require('jsonwebtoken')
 
 const LoginController = async (req,res)=>{ 
     try{
-        const data = await User.findAll()
+        const users = await User.findAll()
         const {username,password} = req.body
-        const authUser = data.find(data => data.username == username)
+        const authUser = users.find(user => user.username == username)
         if(authUser){
             const validPw = await bcrypt.compare(password,authUser.password)
             if (validPw){
@@ -16,22 +16,25 @@ const LoginController = async (req,res)=>{
                     "email" : authUser.email
                 },secretJWT)
                 const message = {
-                    "statusCode": 0,
+                    "statusCode": 200,
                     "message": "OK! Login Berhasil",
                     "data": {
                       "user": {
-                        "name": authUser.username
+                        "name": authUser.username,
+                        "role" : role_id
                       },
                       "token": token
                     }
                   }
                   res.json(message)
             } else{
-                res.send("Login gagal")
+                res.json({
+                    "message" : "Gagal Login Password Salah"
+                })
             } 
                 }else{
                     res.json({
-                        "message" : "Gagal Login"
+                        "message" : "Login Gagal!"
                     })
                 }
     }catch(err){
