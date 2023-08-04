@@ -21,7 +21,7 @@ const LoginController = async (req,res)=>{
                     "data": {
                       "user": {
                         "name": authUser.username,
-                        "role" : role_id
+                        "role" : authUser.role_id
                       },
                       "token": token
                     }
