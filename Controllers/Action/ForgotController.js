@@ -9,7 +9,7 @@ const ForgotController = async (req,res)=>{
     if(user){
         await sendEmail({email:email},urlReset)
         res.json({
-         from: '"Fred Foo 👻" <Guest@example.com>',
+         from: 'example@test.com',
          to: user.email, 
          subject: "Hello",
          message : urlReset
