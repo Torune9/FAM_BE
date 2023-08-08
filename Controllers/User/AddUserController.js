@@ -16,10 +16,10 @@ const AddUserController = async (req,res)=>{
         } 
         const newUSer = await User.create(user)
         res.json({
-            "message" : "Data berhasil dibuat",
-            "status" : res.statusCode,
-            "createdAt" : newUSer.createdAt,
-            "updatedAt" : newUSer.updatedAt
+            message : "Data berhasil dibuat",
+            status : res.statusCode,
+            createdAt : newUSer.createdAt,
+            updatedAt : newUSer.updatedAt
         })
     }catch(err){
             console.log(err);

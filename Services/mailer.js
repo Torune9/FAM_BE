@@ -22,7 +22,6 @@ const sendEmail =  async (email,resetPassword) => {
   });
   console.log("Message sent: %s", info.messageId);
 }
-// sendEmail({email:'wkwk@gmail.com'}).catch(console.error);
 
 module.exports = sendEmail
 

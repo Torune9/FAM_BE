@@ -16,7 +16,8 @@ const ForgotController = async (req,res)=>{
         })
     }else{
         res.json({
-            "message" : `email tidak ditemukan ${email}`
+            code : 404,
+            message : `Email tidak ditemukan ${email}`
         })
     }
 

@@ -15,7 +15,7 @@ const updateUserController = async (req,res)=>{
 
         if(!update){
             res.json({
-                "message" : `${email} tidak di temukan`,
+                message : `${email} tidak di temukan`,
             })
         }
         if (validate) {
@@ -23,9 +23,9 @@ const updateUserController = async (req,res)=>{
             update.updatedAt = new Date()
             update.save()
             res.json({
-                "message" : `Role ${update.username} menjadi ${update.role_id}`,
-                "status" : "Updated",
-                "updatedAt" : update.updatedAt
+                message : `Role ${update.username} menjadi ${update.role_id}`,
+                status : "Updated",
+                updatedAt : update.updatedAt
             }) 
         }
     }catch(err){

@@ -10,12 +10,12 @@ const ResetController = async (req,res)=>{
             user.password = updateHash
             user.save()
             res.json({
-                "message" : `Password berhasil di reset`,
-        
+                message : `Password berhasil di reset`,
             })
         }else{
             res.json({
-                "message" : `email tidak ditemukan ${email}`
+                code :404,
+                message : `Email tidak ditemukan ${email}`
             })
         }
 

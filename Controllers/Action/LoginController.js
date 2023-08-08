@@ -13,29 +13,29 @@ const LoginController = async (req,res)=>{
                 if (validPw){
                     const secretJWT = process.env.JWT_SECRET_KEY
                     const token = jwt.sign({
-                        "username" : authUser.username,
-                        "email" : authUser.email
+                        username : authUser.username,
+                        email : authUser.email
                     },secretJWT)
                     const message = {
-                        "statusCode": res.statusCode,
-                        "message": "OK! Login Berhasil",
-                        "data": {
-                        "user": {
-                            "name": authUser.username,
-                            "role" : authUser.role_id
+                        statusCode: res.statusCode,
+                        message: "OK! Login Berhasil",
+                        data: {
+                        user: {
+                            name: authUser.username,
+                            role : authUser.role_id
                         },
-                        "token": token
+                        token: token
                         }
                     }
                     res.json(message)
                 }else{
                     res.json({
-                            "message" : "Gagal Login Password Salah"
+                            message : "Gagal Login Password Salah"
                         })
                     } 
             }else{
                 res.json({
-                    "message" : "Login Gagal!"
+                    message : "Login Gagal!"
                 })
             }
     }catch(err){
