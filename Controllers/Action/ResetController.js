@@ -1,18 +1,28 @@
 const {Admin,User} = require('../../models')
+const bcrypt = require('bcrypt')
 const ResetController = async (req,res)=>{
     try{
         const data = await User.findAll()
-        const {email,newPassword} = req.body
-        const user = data.find((user)=>user.email == email)
+        const {newPassword} = req.body
+        const user = data.find((user)=>req.params.token == user.reset_token)
         if(user){
-            user.password = newPassword
-            res.json({
-                "message" : `Password berhasil di reset`,
-        
-            })
+            if(user.exp_reset_token > new Date())
+            {
+                const updateHash =  await bcrypt.hash(newPassword,10)
+                user.password = updateHash
+                user.save()
+                res.json({
+                    message : "Password berhasil di reset",
+                })
+            }else{
+                res.status(408)
+                res.json({
+                    message : "Request Timed Out"
+                })
+            }
         }else{
             res.json({
-                "message" : `email tidak ditemukan ${email}`
+                message : "Token Tidak Valid"
             })
         }
 

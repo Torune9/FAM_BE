@@ -17,7 +17,7 @@ router.post('/api/authentication/login',LoginController.LoginController)
 
 router.post('/api/forgot',ForgotContoller.ForgotController)
 
-router.post('/api/reset',ResetController.ResetController)
+router.put('/api/reset-password/:token',ResetController.ResetController)
 
 router.get('/api/listUser',GetUserController.GetUserController)
 

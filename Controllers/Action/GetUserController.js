@@ -7,10 +7,17 @@ const GetUserController = async (req,res)=>{
                 attributes : ['username','email','role_id','createdAt']
             }
         )
-        res.send(users)
+        res.json({
+            code:res.statusCode,
+            data : users
+        })
 
     }catch(err){
-        console.log(err);
+       res.json({
+        code : res.statusCode,
+        message : "NOT_FOUND",
+        error : err
+       })
     }
 }
 
