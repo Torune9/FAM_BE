@@ -15,6 +15,7 @@ const ResetController = async (req,res)=>{
                     message : "Password berhasil di reset",
                 })
             }else{
+                res.status(408)
                 res.json({
                     message : "Request Timed Out"
                 })

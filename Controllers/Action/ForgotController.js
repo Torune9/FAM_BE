@@ -13,7 +13,7 @@ const ForgotController = async (req,res)=>{
         const randomNumber = parseInt(randomBytes.toString('hex'), 16);
 
         if(user){
-        const exp = new Date(Date.now() + 3600000)
+        const exp = new Date(Date.now() + 900000)
         user.reset_token = randomNumber
         user.exp_reset_token = exp 
         user.save()
@@ -27,8 +27,8 @@ const ForgotController = async (req,res)=>{
          message : urlReset,
         })
     }else{
+        res.status(404)
         res.json({
-            code : 404,
             message : `Email tidak ditemukan ${email}`
         })
     }
