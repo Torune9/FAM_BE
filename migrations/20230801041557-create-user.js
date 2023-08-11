@@ -21,12 +21,6 @@ module.exports = {
       role_id: {
         type: Sequelize.STRING,
       },
-      reset_token: {
-        type : Sequelize.STRING,
-      },
-      exp_reset_token: {
-        type :Sequelize.DATE,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
