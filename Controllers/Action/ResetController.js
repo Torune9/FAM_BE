@@ -10,7 +10,7 @@ const ResetController = async (req,res)=>{
             {
                 const updateHash =  await bcrypt.hash(newPassword,10)
                 user.password = updateHash
-                user.save()
+                user.reset_token = null
                 res.json({
                     message : "Password berhasil di reset",
                 })
@@ -20,6 +20,7 @@ const ResetController = async (req,res)=>{
                     message : "Request Timed Out"
                 })
             }
+            user.save()
         }else{
             res.json({
                 message : "Token Tidak Valid"

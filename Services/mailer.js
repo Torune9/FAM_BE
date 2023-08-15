@@ -13,12 +13,13 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendEmail =  async (email,resetPassword) => {
+const sendEmail =  async (option) => {
   const info = await transporter.sendMail({
     from: 'example@test.com',
-    to: email.email,
+    to: option.email,
     subject: "Here your link reset password",
-    text: resetPassword,
+    text: option.resetPassword,
+    html : option.layout
   });
   console.log("Message sent: %s", info.messageId);
 }

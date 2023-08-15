@@ -13,7 +13,7 @@ const AddUserController = async (req,res)=>{
             username : username,
             password:hasPw,
             email : email,
-            role_id : "user",
+            role_id : "USER",
         } 
         const newUSer = await User.create(user)
         res.json({
