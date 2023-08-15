@@ -3,9 +3,10 @@ const {Admin,User} = require('../../models')
 const updateUserController = async (req,res)=>{
     try{
         const role = [{
+            USER:"USER",
             ADMIN:"ADMIN",
-            SYSADMIN:"SYSADMIN"
-            ,AUDIT:"AUDITHOR"
+            SYSADMIN:"SYSADMIN",
+            AUDIT:"AUDITHOR"
         }]
         const users = await User.findAll()
 
@@ -27,6 +28,10 @@ const updateUserController = async (req,res)=>{
                 status : "Updated",
                 updatedAt : update.updatedAt
             }) 
+        }else{
+            res.json({
+                message : "Role tidak ada"
+            })
         }
     }catch(err){
             console.log(err);

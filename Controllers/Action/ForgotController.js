@@ -1,8 +1,9 @@
 const {Admin,User} = require('../../models')
 const sendEmail = require('../../Services/mailer')
-require('dotenv').config()
 const crypto = require('crypto')
-
+const ejs = require('ejs')
+const path = require('path')
+require('dotenv').config()
 
 const ForgotController = async (req,res)=>{
     try{
@@ -18,7 +19,16 @@ const ForgotController = async (req,res)=>{
         user.exp_reset_token = exp 
         user.save()
         const urlReset = `${req.protocol}://${req.get('host')}/api/reset-password/${user.reset_token}`
-        await sendEmail({email:email},urlReset)
+        const pathLayout = path.join(__dirname,'../../views/layoutEmail.ejs')
+        const layout = await ejs.renderFile(pathLayout,{
+            url : urlReset,
+            email : user.email
+        })
+        await sendEmail({
+            email : user.email,
+            resetPassword : urlReset,
+            layout : layout
+        })
        
         res.json({
          from: 'example@test.com',

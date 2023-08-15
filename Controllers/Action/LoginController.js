@@ -35,7 +35,7 @@ const LoginController = async (req,res)=>{
                     } 
             }else{
                 res.json({
-                    message : "Login Gagal!"
+                    message : "Gagal Login, Username | Password Salah!"
                 })
             }
     }catch(err){
