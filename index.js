@@ -2,11 +2,15 @@ const router = require('./routes/index')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const {Admin,User} = require('./models')
 
+app.set('view engine','ejs')
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(router)
+
+app.get('/',(req,res)=>{
+    res.render('layoutEmail')
+})
 app.listen(3000,()=>{
     console.log("Running In Port 3000");
 })
