@@ -1,4 +1,4 @@
-const {Admin,User} = require('../../models')
+const {User} = require('../../models')
 const bcrypt = require('bcrypt')
 
 const AddUserController = async (req,res)=>{

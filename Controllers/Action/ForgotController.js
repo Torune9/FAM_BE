@@ -1,4 +1,4 @@
-const {Admin,User} = require('../../models')
+const {User} = require('../../models')
 const sendEmail = require('../../Services/mailer')
 const crypto = require('crypto')
 const ejs = require('ejs')
