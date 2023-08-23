@@ -1,5 +1,5 @@
-const {Asset,Asset_Category,MD_Asset} = require('./../../models')
-const rule = /[!@#$%^&*()_+"":;'{}|\\//.?<>,]/
+const {Asset,Asset_Category,MD_Asset, Sequelize} = require('./../../models')
+const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
 const getCategories = async (req,res)=>{
     try {
@@ -7,8 +7,16 @@ const getCategories = async (req,res)=>{
             attributes :['Categories_Name','Category_Code']
         })
         res.json({
-            categories : categories
-        })
+            code: 200,
+            message: 'success',
+            result: {
+               content : {
+                list : {
+                    data : categories
+                }
+               } 
+             } 
+          })
     } catch (error) {
         res.send(error)
     }
@@ -61,12 +69,10 @@ const AddCategories = async (req,res)=>{
        }
 
     if(name.trim() == "" || code.trim() == ""){
-        res.status(409)
         res.json({
             message : 'Name dan Code tidak boleh kosong!'
         })
     }else if (rule.test(name) || rule.test(code)) {
-        res.status(409)
         res.json({
             message : 'Masukan Data Yang Valid'
         })
@@ -75,12 +81,16 @@ const AddCategories = async (req,res)=>{
 
         await Asset_Category.create(category)
         res.json({
-            message : 'Category Berhasil Dimasukan'
-        })
+            code: 200,
+            message: 'success data has been created',
+            
+          })
     }
 
     } catch (error) {
-        res.send(error)
+        res.json({
+            message : error.message + ': data uniq should not duplicate'
+        })
     }
 
 }

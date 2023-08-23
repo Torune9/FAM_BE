@@ -13,6 +13,10 @@ module.exports = {
     //     field : 'Category_Code'
     //   }
     // }),
+    queryInterface.addConstraint('Asset_Categories',{
+      fields : ['name'],
+      type : 'unique'
+    }),
     queryInterface.removeColumn('MD_Assets','is_deleted'),
     queryInterface.removeColumn('MD_Assets','quantity'),
     

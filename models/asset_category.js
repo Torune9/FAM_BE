@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Asset_Category',
     deletedAt : 'destroyTime',
-    paranoid : true
+    paranoid :false
   });
   return Asset_Category;
 };

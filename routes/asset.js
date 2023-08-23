@@ -12,11 +12,12 @@ const {
 } = require('../Controllers/Assets/AssetCotroller')
 
 routerAsset.get('/asset/categories',getCategories)
+routerAsset.post('/asset/categories',AddCategories)
 
-routerAsset.post('/asset/add-category',AddCategories)
-routerAsset.post('/asset/addMd-asset',AddMdAsset)
-routerAsset.post('/asset/add-asset',AddAssets)
+routerAsset.post('/asset/master-data',AddMdAsset)
 routerAsset.put('/asset/update-MdAsset',UpdateMdAsset)
+
+routerAsset.post('/asset/add-asset',AddAssets)
 routerAsset.put('/asset/update-Asset',UpdateAsset)
 routerAsset.put('/asset/update-MdCategoryAsset',UpdateCategoryAsset)
 routerAsset.delete('/asset/delete-category',DeleteSoftCategory)
