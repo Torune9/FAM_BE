@@ -14,13 +14,19 @@ module.exports = {
     //   }
     // }),
     queryInterface.addConstraint('Asset_Categories',{
-      fields : ['name'],
+      fields : 'name',
+      type : 'unique'
+    }),
+    queryInterface.addConstraint('Asset_Categories',{
+      fields : 'Category_Code',
       type : 'unique'
     }),
     queryInterface.removeColumn('MD_Assets','is_deleted'),
     queryInterface.removeColumn('MD_Assets','quantity'),
     
-    queryInterface.renameColumn('Asset_Categories','name','Categories_Name'),
+    queryInterface.renameColumn('Asset_Categories','name','category_name'),
+    
+    queryInterface.renameColumn('Asset_Categories','Category_Code','category_code'),
     
     queryInterface.addColumn('MD_Assets','price',{
       type : Sequelize.STRING,
@@ -28,13 +34,13 @@ module.exports = {
     queryInterface.addColumn('Assets','price',{
       type : Sequelize.STRING,
     }),
-    queryInterface.addColumn('Assets','destroyTime',{
+    queryInterface.addColumn('Assets','is_deleted',{
       type : Sequelize.DATE,
     }),
     queryInterface.changeColumn('MD_Assets','status',{
       type : Sequelize.STRING
     }),
-    queryInterface.addColumn('Asset_Categories','destroyTime',{
+    queryInterface.addColumn('Asset_Categories','is_deleted',{
       type : Sequelize.DATE,
     }),
   ])

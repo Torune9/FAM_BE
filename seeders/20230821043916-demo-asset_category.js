@@ -4,36 +4,36 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert ('Asset_Categories', [{
-      Categories_Name: 'Kendaraan',
-      Category_Code: 'C001',
+      category_name: 'Kendaraan',
+      category_code: 'C001',
       createdAt: new Date(),
       updatedAt: new Date()
     },{
-      Categories_Name: 'Mesin',
-      Category_Code: 'C002',
+      category_name: 'Mesin',
+      category_code: 'C002',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      Categories_Name: 'Hardware',
-      Category_Code: 'C003',
+      category_name: 'Hardware',
+      category_code: 'C003',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      Categories_Name: 'Software',
-      Category_Code: 'C004',
+      category_name: 'Software',
+      category_code: 'C004',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      Categories_Name: 'Bangunan',
-      Category_Code: 'C005',
+      category_name: 'Bangunan',
+      category_code: 'C005',
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      Categories_Name: 'Hak Cipta',
-      Category_Code: 'C006',
+      category_name: 'Hak Cipta',
+      category_code: 'C006',
       createdAt: new Date(),
       updatedAt: new Date()
     }],

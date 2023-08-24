@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Asset',
-    deletedAt: 'destroyTime',
+    deletedAt: 'is_deleted',
     paranoid : true
   });
   return Asset;

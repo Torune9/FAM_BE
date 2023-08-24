@@ -13,14 +13,14 @@ const {
 
 routerAsset.get('/asset/categories',getCategories)
 routerAsset.post('/asset/categories',AddCategories)
+routerAsset.put('/asset/categories/:code',UpdateCategoryAsset)
+routerAsset.delete('/asset/categories/:code',DeleteSoftCategory)
 
-routerAsset.post('/asset/master-data',AddMdAsset)
-routerAsset.put('/asset/update-MdAsset',UpdateMdAsset)
+routerAsset.post('/master-asset',AddMdAsset)
+routerAsset.put('/master-asset/:code',UpdateMdAsset)
 
-routerAsset.post('/asset/add-asset',AddAssets)
-routerAsset.put('/asset/update-Asset',UpdateAsset)
-routerAsset.put('/asset/update-MdCategoryAsset',UpdateCategoryAsset)
-routerAsset.delete('/asset/delete-category',DeleteSoftCategory)
-routerAsset.delete('/asset/delete-asset',DeleteSoftAsset)
+routerAsset.post('/assets',AddAssets)
+routerAsset.put('/assets/:code',UpdateAsset)
+routerAsset.delete('/assets/:code',DeleteSoftAsset)
 
 module.exports = routerAsset

@@ -6,14 +6,14 @@ module.exports = {
       id: {
         allowNull: false,
         autoIncrement: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        primaryKey: true,
       },
       name: {
         type: Sequelize.STRING
       },
       Category_Code: {
         type: Sequelize.STRING,
-        primaryKey: true,
       },
       createdAt: {
         allowNull: false,

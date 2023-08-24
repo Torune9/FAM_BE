@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Asset_Category.init({
-    Categories_Name: DataTypes.STRING,
-    Category_Code: DataTypes.STRING,
+    category_name: DataTypes.STRING,
+    category_code: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Asset_Category',
-    deletedAt : 'destroyTime',
-    paranoid :false
+    deletedAt : 'is_deleted',
+    paranoid :true
   });
   return Asset_Category;
 };

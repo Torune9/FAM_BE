@@ -1,26 +1,136 @@
-const {Asset,Asset_Category,MD_Asset, Sequelize} = require('./../../models')
+const {Asset,Asset_Category,MD_Asset} = require('./../../models')
 const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
 const getCategories = async (req,res)=>{
     try {
         const categories = await Asset_Category.findAll({
-            attributes :['Categories_Name','Category_Code']
+            attributes :['category_name','category_code']
         })
         res.json({
             code: 200,
             message: 'success',
             result: {
-               content : {
-                list : {
-                    data : categories
-                }
-               } 
+               content : categories
              } 
           })
     } catch (error) {
-        res.send(error)
+        res.json({
+            error : error.name,
+            message : error.errors
+        })
     }
 
+}
+
+const AddCategories = async (req,res)=>{
+    try {
+       const {name,code} = req.body
+       const category = {
+        category_name: name.replace(/^\w/, (c) => c.toUpperCase()),
+        category_code : code.toUpperCase()
+       }
+
+    if(name.trim() == "" || code.trim() == ""){
+        res.json({
+            message : 'Name dan Code tidak boleh kosong!'
+        })
+    }else if (rule.test(name) || rule.test(code)) {
+        res.json({
+            message : 'Masukan Data Yang Valid'
+        })
+    }
+    else{
+
+        await Asset_Category.create(category)
+        res.json({
+            code: 200,
+            message: 'success data has been created',
+            
+          })
+    }
+
+    } catch (error) {
+        res.json({
+            erorr : error.name,
+            message : error.errors[0].message
+        })
+    }
+
+}
+const UpdateCategoryAsset = async(req,res)=>{
+    try {
+        const {name} = req.body
+        const Categories = await Asset_Category.findAll()
+        const category = Categories.find((category) =>  req.params.code == category.category_code)
+        if (!category) {
+           res.json({
+            message : 'gagal update',
+           }) 
+        }else{
+            category.category_name = name.replace(/^\w/, (c) => c.toUpperCase())
+            category.save()
+            res.json({
+                message : 'Berhasil Update'
+            })
+        }
+
+    } catch (error) {
+        res.json({message : error.message});
+    }
+}
+
+const DeleteSoftCategory = async (req,res) =>{
+    try {
+        const {code} = req.params
+       const del = await Asset_Category.destroy({
+        where : {
+            category_code : code
+        }
+       })
+
+       if (!del) {
+        res.json({
+            message : 'Failed to delete!'
+        })
+       }else{
+        res.json({
+            status : 'Ok!',
+            message : `Soft Deleted`
+           })
+       }
+        
+    } catch (error) {
+        res.json({
+            error : error.errors
+        })
+    }
+
+}
+
+
+
+const UpdateMdAsset = async (req,res)=>{
+    try {
+        const {status,price,name} = req.body
+        const MdAssets = await MD_Asset.findAll()
+        const updateMd =  MdAssets.find(md => md.name === name)
+
+        if (!updateMd) {
+           res.json({
+            message : 'gagal Update'
+           }) 
+        }else{
+            updateMd.status = status
+            updateMd.price = price
+            updateMd.save()
+            res.json({
+                message : 'Berhasil Update'
+            })
+        }
+
+    } catch (error) {
+        
+    }
 }
 
 const AddMdAsset = async (req,res)=>{
@@ -60,40 +170,6 @@ const AddMdAsset = async (req,res)=>{
 
 }
 
-const AddCategories = async (req,res)=>{
-    try {
-       const {name,code} = req.body
-       const category = {
-        Categories_Name: name.replace(/^\w/, (c) => c.toUpperCase()),
-        Category_Code : code.toUpperCase()
-       }
-
-    if(name.trim() == "" || code.trim() == ""){
-        res.json({
-            message : 'Name dan Code tidak boleh kosong!'
-        })
-    }else if (rule.test(name) || rule.test(code)) {
-        res.json({
-            message : 'Masukan Data Yang Valid'
-        })
-    }
-    else{
-
-        await Asset_Category.create(category)
-        res.json({
-            code: 200,
-            message: 'success data has been created',
-            
-          })
-    }
-
-    } catch (error) {
-        res.json({
-            message : error.message + ': data uniq should not duplicate'
-        })
-    }
-
-}
 
 const AddAssets = async (req,res)=>{
     try {
@@ -130,30 +206,6 @@ const AddAssets = async (req,res)=>{
         res.send(error)
     }
 
-}
-
-const UpdateMdAsset = async (req,res)=>{
-    try {
-        const {status,price,name} = req.body
-        const MdAssets = await MD_Asset.findAll()
-        const updateMd =  MdAssets.find(md => md.name === name)
-
-        if (!updateMd) {
-           res.json({
-            message : 'gagal Update'
-           }) 
-        }else{
-            updateMd.status = status
-            updateMd.price = price
-            updateMd.save()
-            res.json({
-                message : 'Berhasil Update'
-            })
-        }
-
-    } catch (error) {
-        
-    }
 }
 
 const UpdateAsset = async(req,res)=>{
@@ -210,46 +262,6 @@ const UpdateAsset = async(req,res)=>{
 
     
 }
-const UpdateCategoryAsset = async(req,res)=>{
-    try {
-        const {name,code} = req.body
-        const Categories = await Asset_Category.findAll()
-        const updateCategory =  Categories.find(category => category.Category_Code === code.toUpperCase())
-
-        if (!updateCategory) {
-           res.json({
-            message : 'gagal Update'
-           }) 
-        }else{
-            updateCategory.Categories_Name = name.replace(/^\w/, (c) => c.toUpperCase())
-            updateCategory.save()
-            res.json({
-                message : 'Berhasil Update'
-            })
-        }
-
-    } catch (error) {
-        
-    }
-}
-
-const DeleteSoftCategory = async (req,res) =>{
-    try {
-        const {name} = req.body
-       await Asset_Category.destroy({
-        where : {
-            Categories_Name : name
-        }
-       })
-       res.json({
-        message : 'Soft Deleted'
-       })
-        
-    } catch (error) {
-        res.send(error)
-    }
-
-}
 
 const DeleteSoftAsset = async (req,res) => {
     try {
@@ -274,6 +286,7 @@ const DeleteSoftAsset = async (req,res) => {
     }
 
 }
+
 module.exports = {
     getCategories,
     AddCategories,
