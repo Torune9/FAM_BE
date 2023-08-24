@@ -19,8 +19,8 @@ routerAsset.delete('/asset/categories/:code',DeleteSoftCategory)
 routerAsset.post('/master-asset',AddMdAsset)
 routerAsset.put('/master-asset/:code',UpdateMdAsset)
 
-routerAsset.post('/assets',AddAssets)
-routerAsset.put('/assets/:code',UpdateAsset)
-routerAsset.delete('/assets/:code',DeleteSoftAsset)
+routerAsset.post('/asset',AddAssets)
+routerAsset.put('/asset/:code',UpdateAsset)
+routerAsset.delete('/asset/:code',DeleteSoftAsset)
 
 module.exports = routerAsset

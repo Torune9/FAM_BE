@@ -1,4 +1,4 @@
-const {Asset,Asset_Category,MD_Asset} = require('./../../models')
+const {Asset,Asset_Category,MD_Asset, Sequelize} = require('./../../models')
 const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
 const getCategories = async (req,res)=>{
@@ -14,10 +14,9 @@ const getCategories = async (req,res)=>{
              } 
           })
     } catch (error) {
-        res.json({
-            error : error.name,
-            message : error.errors
-        })
+       res.json({
+        error : error
+       })
     }
 
 }
@@ -44,33 +43,53 @@ const AddCategories = async (req,res)=>{
         await Asset_Category.create(category)
         res.json({
             code: 200,
-            message: 'success data has been created',
+            message: 'Success!, data has been created',
             
           })
     }
 
     } catch (error) {
-        res.json({
-            erorr : error.name,
-            message : error.errors[0].message
-        })
+        for(const err of error.errors){
+            res.json({
+                Message : 'Failed to add category, ' + err.message,
+            })
+        }
     }
 
 }
 const UpdateCategoryAsset = async(req,res)=>{
     try {
         const {name} = req.body
-        const Categories = await Asset_Category.findAll()
-        const category = Categories.find((category) =>  req.params.code == category.category_code)
-        if (!category) {
-           res.json({
-            message : 'gagal update',
-           }) 
+        const categories = await Asset_Category.findOne({where : {category_code : req.params.code}})
+        if (categories) {
+            const isNameUnique = await Asset_Category.findOne({where :{
+                category_name : {
+                    [Sequelize.Op.eq]:name
+                },
+                category_code : req.params.code
+            }})
+
+            const isCodeUnique = await Asset_Category.findOne({where :{
+                category_name :name,
+                category_code :  {
+                    [Sequelize.Op.eq]:req.params.code
+                },
+            }})
+
+            if (!isNameUnique || !isCodeUnique) {
+                category.category_name = name.replace(/^\w/, (c) => c.toUpperCase())
+                category.save()
+                res.json({
+                    message : 'Succesfull updated!'
+                })
+            }else{
+                res.json({
+                    message : `Failed to update name,Name | Code already exist!`
+                })
+            }
         }else{
-            category.category_name = name.replace(/^\w/, (c) => c.toUpperCase())
-            category.save()
             res.json({
-                message : 'Berhasil Update'
+                message : 'Data not found!'
             })
         }
 
@@ -90,7 +109,7 @@ const DeleteSoftCategory = async (req,res) =>{
 
        if (!del) {
         res.json({
-            message : 'Failed to delete!'
+            message : `Failed to delete,Code: ${code} not found!`
         })
        }else{
         res.json({
@@ -111,9 +130,9 @@ const DeleteSoftCategory = async (req,res) =>{
 
 const UpdateMdAsset = async (req,res)=>{
     try {
-        const {status,price,name} = req.body
+        const {status,price} = req.body
         const MdAssets = await MD_Asset.findAll()
-        const updateMd =  MdAssets.find(md => md.name === name)
+        const updateMd =  MdAssets.find(md => md.asset_code === req.params.code)
 
         if (!updateMd) {
            res.json({
@@ -210,9 +229,9 @@ const AddAssets = async (req,res)=>{
 
 const UpdateAsset = async(req,res)=>{
     try {
-        const {quantity,price,name} = req.body
+        const {quantity,price} = req.body
         const Assets = await Asset.findAll()
-        const updateAsset =  Assets.find(md => md.name === name)
+        const updateAsset =  Assets.find(md => md.asset_code === req.params.code)
 
         if (!updateAsset) {
            res.json({
@@ -223,7 +242,9 @@ const UpdateAsset = async(req,res)=>{
             updateAsset.price = price
             updateAsset.save()
             res.json({
-                message : 'Berhasil Update'
+                status : 'Ok!',
+                message : 'Updated',
+                updateAt : updateAsset.updatedAt
             })
         }
 
@@ -265,10 +286,10 @@ const UpdateAsset = async(req,res)=>{
 
 const DeleteSoftAsset = async (req,res) => {
     try {
-        const {name} = req.body
+        const {code} = req.params
         const destroy = await Asset.destroy({
         where : {
-            name : name
+            asset_code : code
         }
        })
 
@@ -278,11 +299,11 @@ const DeleteSoftAsset = async (req,res) => {
            })
        }else{
         res.json({
-            message : `${name} not found`
+            message : `${code} not found`
         })
        }
     } catch (error) {
-        res.send(error)
+        res.send(error.message)
     }
 
 }

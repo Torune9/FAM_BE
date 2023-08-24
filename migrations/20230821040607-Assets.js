@@ -14,11 +14,11 @@ module.exports = {
     //   }
     // }),
     queryInterface.addConstraint('Asset_Categories',{
-      fields : 'name',
+      fields : ['name'],
       type : 'unique'
     }),
     queryInterface.addConstraint('Asset_Categories',{
-      fields : 'Category_Code',
+      fields : ['Category_Code'],
       type : 'unique'
     }),
     queryInterface.removeColumn('MD_Assets','is_deleted'),
@@ -35,7 +35,7 @@ module.exports = {
       type : Sequelize.STRING,
     }),
     queryInterface.addColumn('Assets','is_deleted',{
-      type : Sequelize.DATE,
+      type : Sequelize.BOOLEAN,
     }),
     queryInterface.changeColumn('MD_Assets','status',{
       type : Sequelize.STRING

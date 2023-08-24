@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Asset_Category.init({
     category_name: DataTypes.STRING,
     category_code: DataTypes.STRING,
+    is_deleted : DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Asset_Category',
