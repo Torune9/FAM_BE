@@ -1,10 +1,14 @@
+const { name } = require('ejs')
 const {Asset,Asset_Category,MD_Asset, Sequelize} = require('./../../models')
 const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
 const getCategories = async (req,res)=>{
     try {
         const categories = await Asset_Category.findAll({
-            attributes :['category_name','category_code']
+            attributes :['category_name','category_code'],
+            where : {
+                is_deleted : false
+            }
         })
         res.json({
             code: 200,
@@ -49,67 +53,68 @@ const AddCategories = async (req,res)=>{
     }
 
     } catch (error) {
-        for(const err of error.errors){
+
+        for (const err of error.errors){
             res.json({
-                Message : 'Failed to add category, ' + err.message,
+                error: err.message,
+                type: err.type,
+                key : err.validatorKey
             })
         }
     }
 
 }
+
 const UpdateCategoryAsset = async(req,res)=>{
-    try {
-        const {name} = req.body
-        const categories = await Asset_Category.findOne({where : {category_code : req.params.code}})
-        if (categories) {
-            const isNameUnique = await Asset_Category.findOne({where :{
-                category_name : {
-                    [Sequelize.Op.eq]:name
-                },
-                category_code : req.params.code
-            }})
-
-            const isCodeUnique = await Asset_Category.findOne({where :{
-                category_name :name,
-                category_code :  {
-                    [Sequelize.Op.eq]:req.params.code
-                },
-            }})
-
-            if (!isNameUnique || !isCodeUnique) {
-                category.category_name = name.replace(/^\w/, (c) => c.toUpperCase())
-                category.save()
-                res.json({
-                    message : 'Succesfull updated!'
-                })
-            }else{
-                res.json({
-                    message : `Failed to update name,Name | Code already exist!`
-                })
+    try{
+        const {newName,newCode} = req.body
+        const {code} = req.params
+        const existingCategory = await Asset_Category.findOne({
+            where : { 
+                [Sequelize.Op.or] : [
+                    {category_code : newCode},
+                    {category_name :newName}
+                ]
             }
-        }else{
+        })
+        if (existingCategory) {
             res.json({
-                message : 'Data not found!'
+                message : `Category with new code or name already exist`
+            })
+        }else{
+            await Asset_Category.update({
+                category_code : newCode,
+                category_name : newName
+            },{
+                where : {category_code : code}
+            })
+
+            res.json({
+                message : 'Category has successfully updated!'
             })
         }
 
-    } catch (error) {
-        res.json({message : error.message});
+
+    }catch(error){
+        res.json({
+            message : error.message
+        })
     }
 }
 
 const DeleteSoftCategory = async (req,res) =>{
     try {
         const {code} = req.params
-       const del = await Asset_Category.destroy({
-        where : {
-            category_code : code
-        }
-       })
+       const del = await Asset_Category.update(
+        {is_deleted : true},
+        {where : 
+            {category_code : code}
+        },
+        )
 
        if (!del) {
         res.json({
-            message : `Failed to delete,Code: ${code} not found!`
+            message : `Failed to delete,Code: not found!`
         })
        }else{
         res.json({
@@ -125,8 +130,6 @@ const DeleteSoftCategory = async (req,res) =>{
     }
 
 }
-
-
 
 const UpdateMdAsset = async (req,res)=>{
     try {

@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     asset_code: DataTypes.STRING,
     price : DataTypes.STRING,
     status: DataTypes.BOOLEAN,
+    is_deleted : DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'MD_Asset',
