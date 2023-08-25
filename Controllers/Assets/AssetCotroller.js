@@ -54,7 +54,9 @@ const AddCategories = async (req,res)=>{
     } catch (error) {
 
         for (const err of error.errors){
+            res.status(409)
             res.json({
+                code : res.statusCode,
                 error: err.message,
                 type: err.type,
                 key : err.validatorKey
@@ -107,8 +109,10 @@ const DeleteSoftCategory = async (req,res) =>{
         const del = await Asset_Category.findOne({where : {category_code : code}})
         
         if (!del) {
+            res.status(404)
             res.json({
-                message : `Failed to delete,Code: ${code} not found!`
+                message : `Failed to delete,Code: ${code} not found!`,
+                code : res.statusCode,
             })
         }else{
            await Asset_Category.update(
