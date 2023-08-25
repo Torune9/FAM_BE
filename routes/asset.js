@@ -13,8 +13,8 @@ const {
 
 routerAsset.get('/asset/categories',getCategories)
 routerAsset.post('/asset/categories',AddCategories)
-routerAsset.put('/asset/categories/:code',UpdateCategoryAsset)
-routerAsset.delete('/asset/categories/:code',DeleteSoftCategory)
+routerAsset.put('/asset/categories/:id',UpdateCategoryAsset)
+routerAsset.delete('/asset/categories/:id',DeleteSoftCategory)
 
 routerAsset.post('/master-asset',AddMdAsset)
 routerAsset.put('/master-asset/:code',UpdateMdAsset)

@@ -69,7 +69,7 @@ const AddCategories = async (req,res)=>{
 const UpdateCategoryAsset = async(req,res)=>{
     try{
         const {newName,newCode} = req.body
-        const {code} = req.params
+        const {id} = req.params
         const existingCategory = await Asset_Category.findOne({
             where : { 
                 [Sequelize.Op.or] : [
@@ -87,7 +87,7 @@ const UpdateCategoryAsset = async(req,res)=>{
                 category_code : newCode,
                 category_name : newName
             },{
-                where : {category_code : code}
+                where : {id : id}
             })
 
             res.json({
@@ -105,8 +105,8 @@ const UpdateCategoryAsset = async(req,res)=>{
 
 const DeleteSoftCategory = async (req,res) =>{
     try {
-        const {code} = req.params
-        const del = await Asset_Category.findOne({where : {category_code : code}})
+        const {id} = req.params
+        const del = await Asset_Category.findOne({where : {id : id}})
         
         if (!del) {
             res.status(404)
@@ -118,7 +118,7 @@ const DeleteSoftCategory = async (req,res) =>{
            await Asset_Category.update(
             {is_deleted : true},
             {where : 
-                {category_code : code}
+                {id : id}
             },
             )
         res.json({
