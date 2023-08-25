@@ -1,4 +1,3 @@
-const { name } = require('ejs')
 const {Asset,Asset_Category,MD_Asset, Sequelize} = require('./../../models')
 const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
@@ -105,18 +104,19 @@ const UpdateCategoryAsset = async(req,res)=>{
 const DeleteSoftCategory = async (req,res) =>{
     try {
         const {code} = req.params
-       const del = await Asset_Category.update(
-        {is_deleted : true},
-        {where : 
-            {category_code : code}
-        },
-        )
-
-       if (!del) {
-        res.json({
-            message : `Failed to delete,Code: not found!`
-        })
-       }else{
+        const del = await Asset_Category.findOne({where : {category_code : code}})
+        
+        if (!del) {
+            res.json({
+                message : `Failed to delete,Code: ${code} not found!`
+            })
+        }else{
+           await Asset_Category.update(
+            {is_deleted : true},
+            {where : 
+                {category_code : code}
+            },
+            )
         res.json({
             status : 'Ok!',
             message : `Soft Deleted`
