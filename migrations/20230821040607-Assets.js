@@ -21,7 +21,7 @@ module.exports = {
       fields : ['Category_Code'],
       type : 'unique'
     }),
-    queryInterface.removeColumn('MD_Assets','is_deleted'),
+    // queryInterface.removeColumn('MD_Assets','is_deleted'),
     queryInterface.removeColumn('MD_Assets','quantity'),
     
     queryInterface.renameColumn('Asset_Categories','name','category_name'),
@@ -41,7 +41,8 @@ module.exports = {
       type : Sequelize.STRING
     }),
     queryInterface.addColumn('Asset_Categories','is_deleted',{
-      type : Sequelize.DATE,
+      type : Sequelize.BOOLEAN,
+      defaultValue: false
     }),
   ])
   },
