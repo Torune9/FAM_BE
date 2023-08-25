@@ -1,4 +1,3 @@
-const { name } = require('ejs')
 const {Asset,Asset_Category,MD_Asset, Sequelize} = require('./../../models')
 const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
