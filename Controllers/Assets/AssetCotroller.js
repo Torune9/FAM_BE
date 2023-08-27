@@ -66,39 +66,52 @@ const AddCategories = async (req,res)=>{
 
 }
 
-const UpdateCategoryAsset = async(req,res)=>{
-    try{
-        const {newName,newCode} = req.body
-        const {id} = req.params
-        const existingCategory = await Asset_Category.findOne({
-            where : { 
-                [Sequelize.Op.or] : [
-                    {category_code : newCode},
-                    {category_name :newName}
-                ]
-            }
-        })
-        if (existingCategory) {
-            res.json({
-                message : `Category with new code or name already exist`
-            })
-        }else{
-            await Asset_Category.update({
-                category_code : newCode,
-                category_name : newName
-            },{
-                where : {id : id}
+const UpdateCategoryAsset = async (req, res) => {
+    try {
+        const { name, code } = req.body
+        const { id } = req.params
+
+        let updateData = {}
+        
+        if (name) {
+            const existingCategoryName = await Asset_Category.findOne({
+                where: { category_name: name }
             })
 
-            res.json({
-                message : 'Category has successfully updated!'
-            })
+            if (existingCategoryName) {
+                return res.json({
+                    message: `Category with name : ${name} already exists.`
+                })
+            }
+
+            updateData.category_name = name
         }
 
+        if (code) {
+            const existingCategoryCode = await Asset_Category.findOne({
+                where: { category_code: code }
+            })
 
-    }catch(error){
+            if (existingCategoryCode) {
+                return res.json({
+                    message: `Category with code : ${code} already exists.`
+                })
+            }
+
+            updateData.category_code = code
+        }
+
+        await Asset_Category.update(updateData, {
+            where: { id: id }
+        })
+
         res.json({
-            message : error.message
+            message: "Category has been successfully updated!"
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
         })
     }
 }
@@ -195,7 +208,6 @@ const AddMdAsset = async (req,res)=>{
     }
 
 }
-
 
 const AddAssets = async (req,res)=>{
     try {
