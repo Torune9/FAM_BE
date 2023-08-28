@@ -34,11 +34,11 @@ const AddCategories = async (req,res)=>{
 
     if(name.trim() == "" || code.trim() == ""){
         res.json({
-            message : 'Name dan Code tidak boleh kosong!'
+            message : 'Name and Code can not be empty!'
         })
     }else if (rule.test(name) || rule.test(code)) {
         res.json({
-            message : 'Masukan Data Yang Valid'
+            message : 'Enter valid data'
         })
     }
     else{
@@ -46,7 +46,7 @@ const AddCategories = async (req,res)=>{
         await Asset_Category.create(category)
         res.json({
             code: 200,
-            message: 'Success!, data has been created',
+            message: 'Success!, category has been created',
             
           })
     }
@@ -148,50 +148,27 @@ const DeleteSoftCategory = async (req,res) =>{
 
 }
 
-const UpdateMdAsset = async (req,res)=>{
-    try {
-        const {status,price} = req.body
-        const MdAssets = await MD_Asset.findAll()
-        const updateMd =  MdAssets.find(md => md.asset_code === req.params.code)
-
-        if (!updateMd) {
-           res.json({
-            message : 'gagal Update'
-           }) 
-        }else{
-            updateMd.status = status
-            updateMd.price = price
-            updateMd.save()
-            res.json({
-                message : 'Berhasil Update'
-            })
-        }
-
-    } catch (error) {
-        
-    }
-}
-
 const AddMdAsset = async (req,res)=>{
     try {
        const {name,code,price} = req.body
        const asset = {
         name: name.replace(/^\w/, (c) => c.toUpperCase()),
         price :price,
-        asset_code : code.toUpperCase(),
+        category_code : code.toUpperCase(),
         status : 'Aktif',
+        is_deleted : false
        }
 
     if(name.trim() == "" || code.trim() == "" || price.trim() == ""){
         res.status(409)
         res.json({
-            message : 'Name | Code | Quantity tidak boleh kosong!',
+            message : 'Name | Code | Quantity can not be empty!',
             code : res.statusCode
         })
     }else if (rule.test(name) || rule.test(code) || rule.test(price)) {
         res.status(409)
         res.json({
-            message : 'Masukan Data Yang Valid',
+            message : 'Enter valid data',
             code : res.statusCode
         })
     }
@@ -199,20 +176,77 @@ const AddMdAsset = async (req,res)=>{
         await MD_Asset.create(asset)
         res.json({
             status : 'OK!',
-            message : `Asset ${name} berhasil ditambahkan`,
+            message: 'Success!, asset has been created',
         })
     }
 
     } catch (error) {
-        res.send(error)
+        for (const err of error.errors){
+            res.status(409)
+            res.json({
+                code : res.statusCode,
+                error: err.message,
+                type: err.type,
+                key : err.validatorKey
+            })
+        }
     }
 
+}
+
+const UpdateMdAsset = async (req,res)=>{
+    try {
+        const {status,price,name} = req.body
+        const {id} = req.params
+        const master = await MD_Asset.findOne({
+            where : {
+                id : id
+            }
+        })
+
+        
+        if (name) {
+            const nameAsset = await MD_Asset.findOne({
+                where: { name: name.replace(/^\w/, (c) => c.toUpperCase()) }
+            })
+
+            if (nameAsset) {
+                return res.json({
+                    message: `${name} already exists.`
+                })
+            }else{
+                await MD_Asset.update({name :name.replace(/^\w/, (c) => c.toUpperCase())},{where : {
+                    id :id
+                }})
+                return res.json({
+                    message: 'Asset has updated.'
+                })
+            }
+        }
+        
+        if (!master) {
+            res.json({
+                message : 'Asset Not Found!'
+            })
+        }else{
+            master.status = status
+            master.price = price
+            master.save()
+            res.json({
+                message : 'Asset has updated.'
+            })
+        }
+
+    } catch (error) {
+        res.json({
+            error : error.message
+        })
+    }
 }
 
 const AddAssets = async (req,res)=>{
     try {
        const {name,code,quantity} = req.body
-       const rule = /[!@#$%^&*()_+"":;'{}|\\//.?<>,]/
        const asset = {
         name: name.replace(/^\w/, (c) => c.toUpperCase()),
         quantity :quantity,
@@ -222,13 +256,13 @@ const AddAssets = async (req,res)=>{
     if(name.trim() == "" || code.trim() == "" || quantity.trim() == ""){
         res.status(409)
         res.json({
-            message : 'Name | Code | Quantity tidak boleh kosong!',
+            message : 'Name | Code | Quantity can not be empty!',
             code : res.statusCode
         })
     }else if (rule.test(name) || rule.test(code) || rule.test(quantity)) {
         res.status(409)
         res.json({
-            message : 'Masukan Data Yang Valid',
+            message : 'Enter valid data!',
             code : res.statusCode
         })
     }
@@ -236,7 +270,7 @@ const AddAssets = async (req,res)=>{
         await Asset.create(asset)
         res.json({
             status : 'OK!',
-            message : `Asset ${name} berhasil ditambahkan`,
+            message: 'Success!, category has been created',
         })
     }
 
@@ -250,11 +284,11 @@ const UpdateAsset = async(req,res)=>{
     try {
         const {quantity,price} = req.body
         const Assets = await Asset.findAll()
-        const updateAsset =  Assets.find(md => md.asset_code === req.params.code)
+        const updateAsset =  Assets.find(md => md.id == req.params.id)
 
         if (!updateAsset) {
            res.json({
-            message : 'gagal Update'
+            message : 'Update failed!'
            }) 
         }else{
             updateAsset.quantity = quantity
@@ -270,6 +304,9 @@ const UpdateAsset = async(req,res)=>{
     } catch (error) {
         res.send(error)
     }
+
+
+    
     //update asset berdasarkan mdasset
     // const MdAssets = await MD_Asset.findAll()
     // const MdAsset = MdAssets.find(asset => asset.name == name)

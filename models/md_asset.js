@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   MD_Asset.init({
     name: DataTypes.STRING,
-    asset_code: DataTypes.STRING,
+    category_code: DataTypes.STRING,
     price : DataTypes.STRING,
-    status: DataTypes.BOOLEAN,
+    status: DataTypes.STRING,
     is_deleted : DataTypes.BOOLEAN
   }, {
     sequelize,

@@ -21,8 +21,13 @@ module.exports = {
       fields : ['Category_Code'],
       type : 'unique'
     }),
+    queryInterface.addConstraint('MD_Assets',{
+      fields : ['name'],
+      type : 'unique'
+    }),
     // queryInterface.removeColumn('MD_Assets','is_deleted'),
     queryInterface.removeColumn('MD_Assets','quantity'),
+    queryInterface.renameColumn('MD_Assets','asset_code','category_code'),
     
     queryInterface.renameColumn('Asset_Categories','name','category_name'),
     
