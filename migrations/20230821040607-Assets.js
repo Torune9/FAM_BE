@@ -41,6 +41,7 @@ module.exports = {
     }),
     queryInterface.addColumn('Assets','is_deleted',{
       type : Sequelize.BOOLEAN,
+      defaultValue : false
     }),
     queryInterface.changeColumn('MD_Assets','status',{
       type : Sequelize.STRING
