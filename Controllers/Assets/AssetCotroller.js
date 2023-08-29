@@ -244,13 +244,14 @@ const UpdateMdAsset = async (req,res)=>{
     }
 }
 
-const AddAssets = async (req,res)=>{
+const AddAsset = async (req,res)=>{
     try {
-       const {name,code,quantity} = req.body
+       const {name,code,quantity,price} = req.body
        const asset = {
         name: name.replace(/^\w/, (c) => c.toUpperCase()),
         quantity :quantity,
         asset_code : code.toUpperCase(),
+        price : price
        }
 
     if(name.trim() == "" || code.trim() == "" || quantity.trim() == ""){
@@ -282,7 +283,7 @@ const AddAssets = async (req,res)=>{
 
 const UpdateAsset = async(req,res)=>{
     try {
-        const {quantity,price} = req.body
+        const {quantity,price,name} = req.body
         const Assets = await Asset.findAll()
         const updateAsset =  Assets.find(md => md.id == req.params.id)
 
@@ -291,6 +292,7 @@ const UpdateAsset = async(req,res)=>{
             message : 'Update failed!'
            }) 
         }else{
+            updateAsset.name = name
             updateAsset.quantity = quantity
             updateAsset.price = price
             updateAsset.save()
@@ -306,7 +308,7 @@ const UpdateAsset = async(req,res)=>{
     }
 
 
-    
+
     //update asset berdasarkan mdasset
     // const MdAssets = await MD_Asset.findAll()
     // const MdAsset = MdAssets.find(asset => asset.name == name)
@@ -368,7 +370,7 @@ module.exports = {
     getCategories,
     AddCategories,
     AddMdAsset,
-    AddAssets,
+    AddAsset,
     DeleteSoftCategory,
     DeleteSoftAsset,
     UpdateMdAsset,

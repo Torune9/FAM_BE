@@ -3,7 +3,7 @@ const {
     getCategories,
     AddCategories,
     AddMdAsset,
-    AddAssets,
+    AddAsset,
     DeleteSoftCategory,
     DeleteSoftAsset,
     UpdateAsset,
@@ -19,8 +19,8 @@ routerAsset.delete('/asset/categories/:id',DeleteSoftCategory)
 routerAsset.post('/master-asset',AddMdAsset)
 routerAsset.put('/master-asset/:id',UpdateMdAsset)
 
-routerAsset.post('/asset',AddAssets)
-routerAsset.put('/asset/:code',UpdateAsset)
-routerAsset.delete('/asset/:code',DeleteSoftAsset)
+routerAsset.post('/asset',AddAsset)
+routerAsset.put('/asset/:id',UpdateAsset)
+routerAsset.delete('/asset/:id',DeleteSoftAsset)
 
 module.exports = routerAsset
