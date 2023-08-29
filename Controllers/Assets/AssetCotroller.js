@@ -148,6 +148,32 @@ const DeleteSoftCategory = async (req,res) =>{
 
 }
 
+const getMdAssetList = async (req,res)=>{
+    try{
+        const assets = await MD_Asset.findAll({
+            attributes : ['name','category_code']
+        })
+        if (assets.length == 0 ) {
+            return res.json({
+                message : 'Not found'
+            })
+        }
+            res.json({
+                code: 200,
+                message: 'success',
+                result: {
+                   content : assets
+                 } 
+              })
+        
+
+    }catch(error){
+        res.json({
+            err : error
+        })
+    }
+}
+
 const AddMdAsset = async (req,res)=>{
     try {
        const {name,code,price} = req.body
@@ -371,6 +397,7 @@ const DeleteSoftAsset = async (req,res) => {
 module.exports = {
     getCategories,
     AddCategories,
+    getMdAssetList,
     AddMdAsset,
     AddAsset,
     DeleteSoftCategory,
