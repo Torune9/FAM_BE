@@ -1,4 +1,5 @@
 const routerAsset = require('express').Router()
+const {authenticateAdmin} = require('../Services/auth')
 const {
     getCategories,
     AddCategories,
@@ -17,7 +18,7 @@ routerAsset.post('/asset/categories',AddCategories)
 routerAsset.put('/asset/categories/:id',UpdateCategoryAsset)
 routerAsset.delete('/asset/categories/:id',DeleteSoftCategory)
 
-routerAsset.get('/master-asset',getMdAssetList)
+routerAsset.get('/master-asset',authenticateAdmin,getMdAssetList)
 routerAsset.post('/master-asset',AddMdAsset)
 routerAsset.put('/master-asset/:id',UpdateMdAsset)
 

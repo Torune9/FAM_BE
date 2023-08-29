@@ -14,7 +14,8 @@ const LoginController = async (req,res)=>{
                     const secretJWT = process.env.JWT_SECRET_KEY
                     const token = jwt.sign({
                         username : authUser.username,
-                        email : authUser.email
+                        email : authUser.email,
+                        role : authUser.role_id
                     },secretJWT)
                     const message = {
                         statusCode: res.statusCode,

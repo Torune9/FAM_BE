@@ -150,48 +150,47 @@ const DeleteSoftCategory = async (req,res) =>{
 
 const getMdAssetList = async (req,res)=>{
     try{
+        const {is_deleted} = req.query
         const assets = await MD_Asset.findAll({
-            attributes : ['name','category_code']
+            attributes : ['id','name','category_code','is_deleted','status','createdAt'],
+            where : {
+                is_deleted : is_deleted
+            }
         })
-        if (assets.length == 0 ) {
-            return res.json({
-                message : 'Not found'
-            })
-        }
             res.json({
                 code: 200,
                 message: 'success',
+                body : res.headersSent,
                 result: {
-                   content : assets
+                   content : assets,
                  } 
               })
-        
 
     }catch(error){
         res.json({
-            err : error
+            error : error.message
         })
     }
 }
 
 const AddMdAsset = async (req,res)=>{
     try {
-       const {name,code,price} = req.body
+       const {name,category_code,price} = req.body
        const asset = {
         name: name.replace(/^\w/, (c) => c.toUpperCase()),
         price :price,
-        category_code : code.toUpperCase(),
+        category_code : category_code.toUpperCase(),
         status : 'Aktif',
         is_deleted : false
        }
 
-    if(name.trim() == "" || code.trim() == "" || price.trim() == ""){
+    if(name.trim() == "" || category_code.trim() == "" || price.trim() == ""){
         res.status(409)
         res.json({
             message : 'Name | Code | Quantity can not be empty!',
             code : res.statusCode
         })
-    }else if (rule.test(name) || rule.test(code) || rule.test(price)) {
+    }else if (rule.test(name) || rule.test(category_code) || rule.test(price)) {
         res.status(409)
         res.json({
             message : 'Enter valid data',
