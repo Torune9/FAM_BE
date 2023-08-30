@@ -225,10 +225,7 @@ const AddMdAsset = async (req,res)=>{
             res.status(404)
             res.json({
                 code : res.statusCode,
-                message : 'Below is a list of existing categories.',
-                data : {
-                    content : categories
-                }
+                message : `Category Not Found!`,
             })
         }
         }
