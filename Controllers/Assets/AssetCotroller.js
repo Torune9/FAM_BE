@@ -196,7 +196,7 @@ const AddMdAsset = async (req,res)=>{
        const asset = {
         name: name.replace(/^\w/, (c) => c.toUpperCase()),
         price :price,
-        category_code : category_code.toUpperCase(),
+        category_code : category_code,
         status : 'Aktif',
         is_deleted : false
        }
