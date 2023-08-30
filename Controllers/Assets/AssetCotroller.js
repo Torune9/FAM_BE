@@ -154,9 +154,6 @@ const getMdAssetList = async (req,res)=>{
         if (!is_deleted) {
             const assetTrue = await MD_Asset.findAll({
                 attributes : ['id','name','category_code','is_deleted','status','createdAt'],
-                where : {
-                    is_deleted : true
-                }
             })
             return res.json({
                 code: 200,
