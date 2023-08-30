@@ -204,7 +204,7 @@ const AddMdAsset = async (req,res)=>{
     if(name.trim() == "" || category_code.trim() == "" || price.trim() == ""){
         res.status(409)
         res.json({
-            message : 'Name | Code | Quantity can not be empty!',
+            message : 'Name | Code | Price can not be empty!',
             code : res.statusCode
         })
     }else if (rule.test(name) || rule.test(category_code) || rule.test(price)) {
@@ -222,7 +222,9 @@ const AddMdAsset = async (req,res)=>{
                 message: 'Success!, asset has been created',
             })
         }else{
+            res.status(404)
             res.json({
+                code : res.statusCode,
                 message : 'Below is a list of existing categories.',
                 data : {
                     content : categories
