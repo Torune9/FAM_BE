@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 const authenticateAdmin = (req, res, next) => {
-  const token = req.header('Bearer-Token');
+  const token = req.header('Authorization');
 
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
@@ -15,8 +15,7 @@ const authenticateAdmin = (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(401).json({ message: error.message });
   }
 };
 

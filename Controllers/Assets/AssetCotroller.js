@@ -151,20 +151,36 @@ const DeleteSoftCategory = async (req,res) =>{
 const getMdAssetList = async (req,res)=>{
     try{
         const {is_deleted} = req.query
-        const assets = await MD_Asset.findAll({
-            attributes : ['id','name','category_code','is_deleted','status','createdAt'],
-            where : {
-                is_deleted : is_deleted
-            }
-        })
-            res.json({
+        if (!is_deleted) {
+            const assetTrue = await MD_Asset.findAll({
+                attributes : ['id','name','category_code','is_deleted','status','createdAt'],
+                where : {
+                    is_deleted : true
+                }
+            })
+            return res.json({
                 code: 200,
                 message: 'success',
-                body : res.headersSent,
+                result: {
+                    content : assetTrue,
+                } 
+            })
+            
+        }else{
+            const assets = await MD_Asset.findAll({
+                attributes : ['id','name','category_code','is_deleted','status','createdAt'],
+                where : {
+                    is_deleted : is_deleted
+                }
+            })
+            return res.json({
+                code: 200,
+                message: 'success',
                 result: {
                    content : assets,
                  } 
               })
+        }
 
     }catch(error){
         res.json({
