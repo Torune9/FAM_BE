@@ -189,6 +189,10 @@ const getMdAssetList = async (req,res)=>{
 const AddMdAsset = async (req,res)=>{
     try {
        const {name,category_code,price} = req.body
+       const categories = await Asset_Category.findAll({
+        attributes : ['category_code','category_name']
+       })
+       const category = categories.find(category => category.category_code == category_code)
        const asset = {
         name: name.replace(/^\w/, (c) => c.toUpperCase()),
         price :price,
@@ -211,12 +215,21 @@ const AddMdAsset = async (req,res)=>{
         })
     }
     else{
-        await MD_Asset.create(asset)
-        res.json({
-            status : 'OK!',
-            message: 'Success!, asset has been created',
-        })
-    }
+        if (category) {     
+            await MD_Asset.create(asset)
+            res.json({
+                status : 'OK!',
+                message: 'Success!, asset has been created',
+            })
+        }else{
+            res.json({
+                message : 'Below is a list of existing categories.',
+                data : {
+                    content : categories
+                }
+            })
+        }
+        }
 
     } catch (error) {
         for (const err of error.errors){
