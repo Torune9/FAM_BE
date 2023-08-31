@@ -36,9 +36,6 @@ module.exports = {
     queryInterface.addColumn('MD_Assets','price',{
       type : Sequelize.STRING,
     }),
-    queryInterface.addColumn('Assets','price',{
-      type : Sequelize.STRING,
-    }),
     queryInterface.addColumn('Assets','is_deleted',{
       type : Sequelize.BOOLEAN,
       defaultValue : false
