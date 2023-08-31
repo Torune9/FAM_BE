@@ -244,78 +244,71 @@ const AddMdAsset = async (req,res)=>{
 
 }
 
-const UpdateMdAsset = async (req,res)=>{
+const UpdateMdAsset = async (req, res) => {
     try {
-        const {status,price,name,category_code} = req.body
-        const {id} = req.params
+        const { status, price, name, category_code } = req.body;
+        const { id } = req.params;
         const master = await MD_Asset.findOne({
-            where : {
-                id : id
+            where: {
+                id: id
             }
-        })
-        const categories = await Asset_Category.findAll({
-            attributes : ['category_code','category_name']
-           })
+        });
 
-        
+        if (!master) {
+            return res.json({
+                message: 'Asset Not Found!'
+            });
+        }
+
+        const categories = await Asset_Category.findAll({
+            attributes: ['category_code', 'category_name']
+        });
+
         if (name) {
             const nameAsset = await MD_Asset.findOne({
-                where: { 
+                where: {
                     name: name.replace(/^\w/, (c) => c.toUpperCase()),
-                    id : {
-                        [Sequelize.Op.ne] : id
+                    id: {
+                        [Sequelize.Op.ne]: id
                     }
                 }
-            })
+            });
 
             if (nameAsset) {
                 return res.json({
                     message: `${name} already exists.`
-                })
-            }else{
-                await MD_Asset.update({name :name.replace(/^\w/, (c) => c.toUpperCase())},{where : {
-                    id :id
-                }})
-                return res.json({
-                    message: 'Asset has updated.'
-                })
+                });
+            } else {
+                master.name = name.replace(/^\w/, (c) => c.toUpperCase());
             }
         }
 
         if (category_code) {
-            const category = categories.find(category => category.category_code == category_code)
+            const category = categories.find(category => category.category_code == category_code);
             if (category) {
-                master.category_code = category_code
-                await master.save()
+                master.category_code = category_code;
+            } else {
                 return res.json({
-                    message : 'Asset has updated.'
-                })
-            }else{
-                return res.json({
-                    message : 'Category not found!'
-                })
+                    message: 'Category not found!'
+                });
             }
         }
-        
-        if (!master) {
-            res.json({
-                message : 'Asset Not Found!'
-            })
-        }else{
-            master.status = status
-            master.price = price
-            await master.save()
-            return res.json({
-                message : 'Asset has updated.'
-            })
-        }
 
+        master.status = status !== undefined ? status : master.status;
+        master.price = price !== undefined ? price : master.price;
+
+        await master.save();
+
+        return res.json({
+            message: 'Asset has been updated.'
+        });
     } catch (error) {
         res.json({
-            error : error.message
-        })
+            error: error.message
+        });
     }
-}
+};
+
 
 const AddAsset = async (req,res)=>{
     try {
