@@ -20,7 +20,7 @@ routerAsset.delete('/asset/categories/:id',DeleteSoftCategory)
 
 routerAsset.get('/master-asset',authenticateAdmin,getMdAssetList)
 routerAsset.post('/master-asset',authenticateAdmin,AddMdAsset)
-routerAsset.put('/master-asset/:id',UpdateMdAsset)
+routerAsset.put('/master-asset/:id',authenticateAdmin,UpdateMdAsset)
 
 routerAsset.post('/asset',AddAsset)
 routerAsset.put('/asset/:id',UpdateAsset)

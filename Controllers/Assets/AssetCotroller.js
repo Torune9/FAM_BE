@@ -246,18 +246,26 @@ const AddMdAsset = async (req,res)=>{
 
 const UpdateMdAsset = async (req,res)=>{
     try {
-        const {status,price,name} = req.body
+        const {status,price,name,category_code} = req.body
         const {id} = req.params
         const master = await MD_Asset.findOne({
             where : {
                 id : id
             }
         })
+        const categories = await Asset_Category.findAll({
+            attributes : ['category_code','category_name']
+           })
 
         
         if (name) {
             const nameAsset = await MD_Asset.findOne({
-                where: { name: name.replace(/^\w/, (c) => c.toUpperCase()) }
+                where: { 
+                    name: name.replace(/^\w/, (c) => c.toUpperCase()),
+                    id : {
+                        [Sequelize.Op.ne] : id
+                    }
+                }
             })
 
             if (nameAsset) {
@@ -273,6 +281,21 @@ const UpdateMdAsset = async (req,res)=>{
                 })
             }
         }
+
+        if (category_code) {
+            const category = categories.find(category => category.category_code == category_code)
+            if (category) {
+                master.category_code = category_code
+                await master.save()
+                return res.json({
+                    message : 'Asset has updated.'
+                })
+            }else{
+                return res.json({
+                    message : 'Category not found!'
+                })
+            }
+        }
         
         if (!master) {
             res.json({
@@ -281,8 +304,8 @@ const UpdateMdAsset = async (req,res)=>{
         }else{
             master.status = status
             master.price = price
-            master.save()
-            res.json({
+            await master.save()
+            return res.json({
                 message : 'Asset has updated.'
             })
         }
