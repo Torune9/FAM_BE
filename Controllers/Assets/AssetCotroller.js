@@ -264,6 +264,11 @@ const UpdateMdAsset = async (req, res) => {
             attributes: ['category_code', 'category_name']
         });
 
+        if (!name || !status || !price || !category_code) {
+            return res.json({
+                message : 'All fields are requred!!'
+            })
+        }
         if (name) {
             const nameAsset = await MD_Asset.findOne({
                 where: {
@@ -282,6 +287,7 @@ const UpdateMdAsset = async (req, res) => {
                 master.name = name.replace(/^\w/, (c) => c.toUpperCase());
             }
         }
+
 
         if (category_code) {
             const category = categories.find(category => category.category_code == category_code);
