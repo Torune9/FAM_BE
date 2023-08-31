@@ -318,38 +318,38 @@ const UpdateMdAsset = async (req, res) => {
 
 const AddAsset = async (req,res)=>{
     try {
-       const {name,code,quantity,price} = req.body
-       const asset = {
-        name: name.replace(/^\w/, (c) => c.toUpperCase()),
-        quantity :quantity,
-        asset_code : code.toUpperCase(),
-        price : price
-       }
+        const {name,quantity,category_code} = req.body
+        const masterAsset = await MD_Asset.findAll()
+        const master = masterAsset.find(master => master.category_code == category_code)
 
-    if(name.trim() == "" || code.trim() == "" || quantity.trim() == ""){
-        res.status(409)
-        res.json({
-            message : 'Name | Code | Quantity can not be empty!',
-            code : res.statusCode
-        })
-    }else if (rule.test(name) || rule.test(code) || rule.test(quantity)) {
-        res.status(409)
-        res.json({
-            message : 'Enter valid data!',
-            code : res.statusCode
-        })
-    }
-    else{
-        await Asset.create(asset)
-        res.json({
-            status : 'OK!',
-            message: 'Success!, category has been created',
-        })
-    }
+        if (!category_code || !name || !quantity) {
+            return res.json({
+                message : `All fields can't be empty`
+            })
+        }
+ 
+         if (!master) {   
+            res.status(404)
+            return res.json({
+                code : res.statusCode,
+                message : `Category Not Found!`,
+            })    
+         }
 
-    } catch (error) {
-        res.send(error)
-    }
+         await Asset.create({
+            name : name,
+            quantity : quantity,
+            asset_code : category_code
+         })
+         res.json({
+                status : 'OK!',
+                message: 'Success!, asset has been created',
+            })
+ 
+     } catch (error) {
+        
+         res.send(error)
+     }
 
 }
 
@@ -377,41 +377,7 @@ const UpdateAsset = async(req,res)=>{
 
     } catch (error) {
         res.send(error)
-    }
-
-
-
-    //update asset berdasarkan mdasset
-    // const MdAssets = await MD_Asset.findAll()
-    // const MdAsset = MdAssets.find(asset => asset.name == name)
-    // if (MdAsset) {
-    //     const totalPrice = MdAsset.price * quantity
-    //     await Asset.update({
-    //         price :  totalPrice,
-    //         quantity : quantity,
-    //     },{
-    //         where : {name : name}
-    //     })
-    //     res.json({
-    //         message : `update berhasil`
-    //     })
-    // }else if(!MdAsset){
-    //     await Asset.update({
-    //         quantity : quantity,
-    //         price :  price * quantity,
-    //     },{
-    //         where : {name : name}
-    //     })
-    //     res.json({
-    //         message : `update berhasil`
-    //     })
-    // }else{
-    //     res.json({
-    //         message : 'gagal update'
-    //     })
-    // }
-
-    
+    }    
 }
 
 const DeleteSoftAsset = async (req,res) => {
