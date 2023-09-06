@@ -4,7 +4,7 @@ const GetUserController = async (req,res)=>{
     try{
         const users = await User.findAll(
             {
-                attributes : ['username','email','role_id','createdAt']
+                attributes : ['username','email','role_id','password','createdAt']
             }
         )
         res.json({

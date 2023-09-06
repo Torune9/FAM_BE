@@ -32,7 +32,7 @@ const AddCategories = async (req,res)=>{
         category_code : code.toUpperCase()
        }
 
-    if(name.trim() == "" || code.trim() == ""){
+    if(!name || !code){
         res.json({
             message : 'Name and Code can not be empty!'
         })
@@ -201,7 +201,7 @@ const AddMdAsset = async (req,res)=>{
         is_deleted : false
        }
 
-    if(name.trim() == "" || category_code.trim() == "" || price.trim() == ""){
+    if(!name || !category_code || !price){
         res.status(409)
         res.json({
             message : 'Name | Code | Price can not be empty!',

@@ -31,12 +31,14 @@ const LoginController = async (req,res)=>{
                     res.json(message)
                 }else{
                     res.json({
-                            message : "Gagal Login Password Salah"
+                            code : 406,
+                            message : "Login Failed."
                         })
                     } 
             }else{
                 res.json({
-                    message : "Gagal Login, Username | Password Salah!"
+                    code : 406,
+                    message : "Login Failed."
                 })
             }
     }catch(err){
