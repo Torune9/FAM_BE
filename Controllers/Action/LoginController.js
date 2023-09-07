@@ -32,13 +32,13 @@ const LoginController = async (req,res)=>{
                 }else{
                     res.json({
                             code : 406,
-                            message : "Login Failed."
+                            message : "Wrong password!"
                         })
                     } 
             }else{
                 res.json({
                     code : 406,
-                    message : "Login Failed."
+                    message : "Login failed!"
                 })
             }
     }catch(err){
