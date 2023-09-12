@@ -53,9 +53,8 @@ const AddCategories = async (req,res)=>{
 
     } catch (error) {
         for (const err of error.errors){
-            res.status(200)
             res.json({
-                code : res.statusCode,
+                code : 409,
                 message: err.message,
                 type: err.type,
                 key : err.validatorKey
