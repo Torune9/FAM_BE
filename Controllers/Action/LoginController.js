@@ -19,7 +19,7 @@ const LoginController = async (req,res)=>{
                     },secretJWT)
                     const message = {
                         statusCode: res.statusCode,
-                        message: "OK! Login Berhasil",
+                        message: "Login success",
                         data: {
                         user: {
                             name: authUser.username,
