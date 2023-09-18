@@ -4,10 +4,11 @@ const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 const getCategories = async (req,res)=>{
     try {
         const categories = await Asset_Category.findAll({
-            attributes :['category_name','category_code'],
+            attributes :['id','category_name','category_code'],
+            order : [['id','DESC']],
             where : {
-                is_deleted : false
-            }
+                is_deleted : false,
+            },
         })
         res.json({
             code: 200,
@@ -70,8 +71,13 @@ const UpdateCategoryAsset = async (req, res) => {
         const { id } = req.params
 
         let updateData = {}
+
         
-        if (name) {
+        if (!name) {
+            return res.json({
+                message : 'Failed to update.'
+            })
+        }else{
             const existingCategoryName = await Asset_Category.findOne({
                 where: { category_name: name }
             })
@@ -83,17 +89,23 @@ const UpdateCategoryAsset = async (req, res) => {
             }
 
             updateData.category_name = name
+            
         }
 
-        if (code) {
-            const existingCategoryCode = await Asset_Category.findOne({
-                where: { category_code: code }
+        if (!code) {
+            return res.json({
+                message : 'Failed to update.'
             })
-
-            if (existingCategoryCode) {
-                return res.json({
-                    message: `Category with code : ${code} already exists.`
+        }else{
+                const existingCategoryCode = await Asset_Category.findOne({
+                    where: { category_code: code }
                 })
+    
+                if (existingCategoryCode) {
+                    return res.json({
+                        message: `Category with code : ${code} already exists.`
+                    })
+
             }
 
             updateData.category_code = code
@@ -102,6 +114,7 @@ const UpdateCategoryAsset = async (req, res) => {
         await Asset_Category.update(updateData, {
             where: { id: id }
         })
+        
 
         res.json({
             message: "Category has been successfully updated!"
