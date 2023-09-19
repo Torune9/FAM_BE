@@ -77,37 +77,38 @@ const UpdateCategoryAsset = async (req, res) => {
             })
         }
 
+        
         if (name) {
             const existingCategoryName = await Asset_Category.findOne({
                 where: { category_name: name }
             })
-
+            
             if (existingCategoryName) {
                 return res.json({
                     message: `Category with name : ${name} already exists.`
                 })
             }
-
-            updateData.category_name = name
+            
+            updateData.category_name = name.replace(/^\w/, (c) => c.toUpperCase())
             
         }
-
+        
         if (code) {
-           
-                const existingCategoryCode = await Asset_Category.findOne({
-                    where: { category_code: code }
+            
+            const existingCategoryCode = await Asset_Category.findOne({
+                where: { category_code: code }
+            })
+            
+            if (existingCategoryCode) {
+                return res.json({
+                    message: `Category with code : ${code} already exists.`
                 })
-    
-                if (existingCategoryCode) {
-                    return res.json({
-                        message: `Category with code : ${code} already exists.`
-                    })
-
+                
             }
-
-            updateData.category_code = code
+            
+            updateData.category_code = code.toUpperCase()
         }
-
+        
         await Asset_Category.update(updateData, {
             where: { id: id }
         })
