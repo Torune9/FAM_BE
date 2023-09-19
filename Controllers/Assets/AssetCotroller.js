@@ -4,11 +4,9 @@ const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 const getCategories = async (req,res)=>{
     try {
         const categories = await Asset_Category.findAll({
-            attributes :['id','category_name','category_code'],
+            attributes :['id','category_name','category_code','is_deleted'],
             order : [['id','DESC']],
-            where : {
-                is_deleted : false,
-            },
+          
         })
         res.json({
             code: 200,
