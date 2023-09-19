@@ -3,6 +3,7 @@ const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
 const getCategories = async (req,res)=>{
     try {
+        const {is_deleted = false} = req.query
         const categories = await Asset_Category.findAll({
             attributes :['id','category_name','category_code','is_deleted'],
             order : [['id','DESC']],
@@ -70,12 +71,13 @@ const UpdateCategoryAsset = async (req, res) => {
 
         let updateData = {}
 
-        
-        if (!name) {
+        if (!name && !code) {
             return res.json({
-                message : 'Failed to update.'
+                message : 'All field required'
             })
-        }else{
+        }
+
+        if (name) {
             const existingCategoryName = await Asset_Category.findOne({
                 where: { category_name: name }
             })
@@ -90,11 +92,8 @@ const UpdateCategoryAsset = async (req, res) => {
             
         }
 
-        if (!code) {
-            return res.json({
-                message : 'Failed to update.'
-            })
-        }else{
+        if (code) {
+           
                 const existingCategoryCode = await Asset_Category.findOne({
                     where: { category_code: code }
                 })
