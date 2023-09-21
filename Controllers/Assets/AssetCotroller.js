@@ -1,28 +1,36 @@
 const {Asset,Asset_Category,MD_Asset, Sequelize} = require('./../../models')
 const rule = /[!@#$%^&*()+"":;'{}|\\//.?<>,]/
 
-const getCategories = async (req,res)=>{
+const getCategories = async (req, res) => {
     try {
-        const {is_deleted = false} = req.query
+        const { status = false, 
+                search = '' } = req.query;
+
         const categories = await Asset_Category.findAll({
-            attributes :['id','category_name','category_code','is_deleted'],
-            order : [['id','DESC']],
-          
-        })
+            attributes: ['id', 'category_name', 'category_code', 'is_deleted'],
+            order: [['id', 'DESC']],
+            where: {
+               is_deleted : status,
+               category_name: {
+                [Sequelize.Op.like]: `%${search}%`
+            }
+            }
+        });
+
         res.json({
             code: 200,
             message: 'success',
             result: {
-               content : categories
-             } 
-          })
+                content: categories
+            }
+        });
     } catch (error) {
-       res.json({
-        error : error
-       })
+        res.json({
+            error: error.message // Use error.message to get the error message
+        });
     }
+};
 
-}
 
 const AddCategories = async (req,res)=>{
     try {
@@ -159,35 +167,25 @@ const DeleteSoftCategory = async (req,res) =>{
 
 const getMdAssetList = async (req,res)=>{
     try{
-        const {is_deleted} = req.query
-        if (!is_deleted) {
-            const assetTrue = await MD_Asset.findAll({
-                attributes : ['id','name','category_code','is_deleted','status','createdAt'],
-            })
-            return res.json({
-                code: 200,
-                message: 'success',
-                result: {
-                    content : assetTrue,
-                } 
-            })
-            
-        }else{
-            const assets = await MD_Asset.findAll({
-                attributes : ['id','name','category_code','is_deleted','status','createdAt'],
-                where : {
-                    is_deleted : is_deleted
-                }
-            })
-            return res.json({
-                code: 200,
-                message: 'success',
-                result: {
-                   content : assets,
-                 } 
-              })
-        }
-
+        const { status = false,
+                search = ''} = req.query
+        const masterAsset = await MD_Asset.findAll({
+            attributes : ['id','name','category_code','is_deleted','status','createdAt'],
+            order: [['id', 'DESC']],
+            where: {
+                is_deleted : status,
+                name: {
+                 [Sequelize.Op.like]: `%${search}%`
+             }
+            }
+        })
+        return res.json({
+            code: 200,
+            message: 'success',
+            result: {
+                content : masterAsset,
+            } 
+        })
     }catch(error){
         res.json({
             error : error.message
@@ -197,30 +195,26 @@ const getMdAssetList = async (req,res)=>{
 
 const AddMdAsset = async (req,res)=>{
     try {
-       const {name,category_code,price} = req.body
+       const {name,code,price} = req.body
        const categories = await Asset_Category.findAll({
         attributes : ['category_code','category_name']
        })
-       const category = categories.find(category => category.category_code == category_code)
        const asset = {
         name: name.replace(/^\w/, (c) => c.toUpperCase()),
         price :price,
-        category_code : category_code,
+        category_code : code.toUpperCase(),
         status : 'Aktif',
         is_deleted : false
        }
+       const category = categories.find(category => category.category_code == code.toUpperCase())
 
-    if(!name || !category_code || !price){
-        res.status(409)
+    if(!name || !code || !price){
         res.json({
             message : 'Name | Code | Price can not be empty!',
-            code : res.statusCode
         })
-    }else if (rule.test(name) || rule.test(category_code) || rule.test(price)) {
-        res.status(409)
+    }else if (rule.test(name) || rule.test(code) || rule.test(price)) {
         res.json({
             message : 'Enter valid data',
-            code : res.statusCode
         })
     }
     else{
@@ -231,9 +225,7 @@ const AddMdAsset = async (req,res)=>{
                 message: 'Success!, asset has been created',
             })
         }else{
-            res.status(404)
             res.json({
-                code : res.statusCode,
                 message : `Category Not Found!`,
             })
         }
@@ -241,9 +233,7 @@ const AddMdAsset = async (req,res)=>{
 
     } catch (error) {
         for (const err of error.errors){
-            res.status(409)
             res.json({
-                code : res.statusCode,
                 error: err.message,
                 type: err.type,
                 key : err.validatorKey
@@ -255,7 +245,7 @@ const AddMdAsset = async (req,res)=>{
 
 const UpdateMdAsset = async (req, res) => {
     try {
-        const { status, price, name, category_code } = req.body;
+        const { status,name, code } = req.body;
         const { id } = req.params;
         const master = await MD_Asset.findOne({
             where: {
@@ -265,7 +255,7 @@ const UpdateMdAsset = async (req, res) => {
 
         if (!master) {
             return res.json({
-                message: 'Asset Not Found!'
+                message: 'Failed Update,Asset Not Found!'
             });
         }
 
@@ -273,9 +263,9 @@ const UpdateMdAsset = async (req, res) => {
             attributes: ['category_code', 'category_name']
         });
 
-        if (!name || !status || !price || !category_code) {
-            return res.json({
-                message : 'All fields are requred!!'
+        if (!name || !status || !code) {
+            return res.status(203).json({
+                message : 'Failed Update,All fields are requred!!'
             })
         }
         if (name) {
@@ -290,7 +280,7 @@ const UpdateMdAsset = async (req, res) => {
 
             if (nameAsset) {
                 return res.json({
-                    message: `${name} already exists.`
+                    message: `Failed Update,${name} already exists.`
                 });
             } else {
                 master.name = name.replace(/^\w/, (c) => c.toUpperCase());
@@ -298,20 +288,18 @@ const UpdateMdAsset = async (req, res) => {
         }
 
 
-        if (category_code) {
-            const category = categories.find(category => category.category_code == category_code);
+        if (code) {
+            const category = categories.find(category => category.category_code == code);
             if (category) {
-                master.category_code = category_code;
+                master.category_code = code;
             } else {
                 return res.json({
-                    message: 'Category not found!'
+                    message: 'Failed Update,Category not found!'
                 });
             }
         }
 
         master.status = status !== undefined ? status : master.status;
-        master.price = price !== undefined ? price : master.price;
-
         await master.save();
 
         return res.json({
