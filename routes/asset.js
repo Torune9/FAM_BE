@@ -10,13 +10,15 @@ const {
     DeleteSoftAsset,
     UpdateAsset,
     UpdateMdAsset,
-    UpdateCategoryAsset
+    UpdateCategoryAsset,
+    RestoreCategory
 } = require('../Controllers/Assets/AssetCotroller')
 
 routerAsset.get('/asset/categories',getCategories)
 routerAsset.post('/asset/categories',AddCategories)
 routerAsset.put('/asset/categories/:id',UpdateCategoryAsset)
 routerAsset.delete('/asset/categories/:id',DeleteSoftCategory)
+routerAsset.get('/asset/categories/:id',RestoreCategory)
 
 routerAsset.get('/master-asset',authenticateAdmin,getMdAssetList)
 routerAsset.post('/master-asset',authenticateAdmin,AddMdAsset)

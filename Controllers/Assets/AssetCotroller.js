@@ -165,6 +165,41 @@ const DeleteSoftCategory = async (req,res) =>{
 
 }
 
+const RestoreCategory = async (req,res)=>{
+    try {
+        const {id} = req.params
+        const data = await Asset_Category.findOne({where : {id : id}})
+        
+        if (data) {
+            await Asset_Category.update(
+                {is_deleted : false},
+                {where : 
+                    {id : id}
+                },
+                )
+            res.json({
+                status : 'Ok',
+                message : `Has been restore`
+               })
+        }else{
+            res.status(404)
+            res.json({
+                message : `Failed to delete,Code: ${code} not found!`,
+                code : res.statusCode,
+            })
+          
+       }
+        
+    } catch (error) {
+        res.json({
+            eror : error
+        })
+    }
+}
+
+
+
+
 const getMdAssetList = async (req,res)=>{
     try{
         const { status = false,
@@ -414,4 +449,5 @@ module.exports = {
     UpdateMdAsset,
     UpdateAsset,
     UpdateCategoryAsset,
+    RestoreCategory
 }
