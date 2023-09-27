@@ -16,11 +16,11 @@ const AddMdAsset = async (req,res)=>{
        const category = categories.find(category => category.category_code == code.toUpperCase())
 
     if(!name || !code || !price){
-        res.json({
-            message : 'Name | Code | Price can not be empty!',
+        res.status(406).json({
+            message : 'Form all required',
         })
     }else if (rule.test(name) || rule.test(code) || rule.test(price)) {
-        res.json({
+        res.status(406).json({
             message : 'Enter valid data',
         })
     }
@@ -28,19 +28,19 @@ const AddMdAsset = async (req,res)=>{
         if (category) {     
             await MD_Asset.create(asset)
             res.json({
-                status : 'OK!',
-                message: 'Success!, asset has been created',
+                status : 'Ok',
+                message: 'Success,asset has been created',
             })
         }else{
-            res.json({
-                message : `Category Not Found!`,
+            res.status(404).json({
+                message : `Category Not Found`,
             })
         }
         }
 
     } catch (error) {
         for (const err of error.errors){
-            res.json({
+            res.status(409).json({
                 error: err.message,
                 type: err.type,
                 key : err.validatorKey

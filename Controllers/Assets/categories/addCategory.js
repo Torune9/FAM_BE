@@ -9,11 +9,11 @@ const AddCategories = async (req,res)=>{
        }
 
     if(!name || !code){
-        res.json({
-            message : 'Name and Code can not be empty!'
+        res.status(406).json({
+            message : `Form can't empty`
         })
     }else if (rule.test(name) || rule.test(code)) {
-        res.json({
+        res.status(406).json({
             message : 'Enter valid data'
         })
     }
@@ -29,8 +29,7 @@ const AddCategories = async (req,res)=>{
 
     } catch (error) {
         for (const err of error.errors){
-            res.json({
-                code : 409,
+            res.status(409).json({
                 message: err.message,
                 type: err.type,
                 key : err.validatorKey

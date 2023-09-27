@@ -8,7 +8,7 @@ const UpdateCategoryAsset = async (req, res) => {
         let updateData = {}
 
         if (!name && !code) {
-            return res.json({
+            return res.status(406).json({
                 message : 'All field required'
             })
         }
@@ -20,8 +20,8 @@ const UpdateCategoryAsset = async (req, res) => {
             })
             
             if (existingCategoryName) {
-                return res.json({
-                    message: `Category with name : ${name} already exists.`
+                return res.status(409).json({
+                    message: `Name : ${name},already exists`
                 })
             }
             
@@ -32,12 +32,12 @@ const UpdateCategoryAsset = async (req, res) => {
         if (code) {
             
             const existingCategoryCode = await Asset_Category.findOne({
-                where: { category_code: code }
+                where: { category_code: code.toUpperCase() }
             })
             
             if (existingCategoryCode) {
-                return res.json({
-                    message: `Category with code : ${code} already exists.`
+                return res.status(409).json({
+                    message: `Code : ${code},already exists`
                 })
                 
             }

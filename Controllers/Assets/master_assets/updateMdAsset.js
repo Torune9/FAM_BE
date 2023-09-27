@@ -11,8 +11,8 @@ const UpdateMdAsset = async (req, res) => {
         });
 
         if (!master) {
-            return res.json({
-                message: 'Failed Update,Asset Not Found!'
+            return res.status(404).json({
+                message: 'Asset Not Found!'
             });
         }
 
@@ -21,8 +21,8 @@ const UpdateMdAsset = async (req, res) => {
         });
 
         if (!name || !status || !code) {
-            return res.status(203).json({
-                message : 'Failed Update,All fields are requred!!'
+            return res.status(406).json({
+                message : 'All fields are requred'
             })
         }
         if (name) {
@@ -36,8 +36,8 @@ const UpdateMdAsset = async (req, res) => {
             });
 
             if (nameAsset) {
-                return res.json({
-                    message: `Failed Update,${name} already exists.`
+                return res.status(409).json({
+                    message: `${name} already exists.`
                 });
             } else {
                 master.name = name.replace(/^\w/, (c) => c.toUpperCase());
@@ -50,7 +50,7 @@ const UpdateMdAsset = async (req, res) => {
             if (category) {
                 master.category_code = code;
             } else {
-                return res.json({
+                return res.status(404).json({
                     message: 'Failed Update,Category not found!'
                 });
             }
