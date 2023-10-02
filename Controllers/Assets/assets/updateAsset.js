@@ -1,29 +1,37 @@
-const {Asset} = require('../../../models')
+const {Asset,Sequelize} = require('../../../models')
 
-const UpdateAsset = async(req,res)=>{
+const UpdateAsset = async (req, res) => {
     try {
-        const {quantity,price,name} = req.body
-        const Assets = await Asset.findAll()
-        const updateAsset =  Assets.find(md => md.id == req.params.id)
+        const { id } = req.params;
+        const { status,quantity } = req.body;
+        const assets = await Asset.findOne({
+            where: {
+                id: id
+            }
+        });
 
-        if (!updateAsset) {
-           res.json({
-            message : 'Update failed!'
-           }) 
-        }else{
-            updateAsset.name = name
-            updateAsset.quantity = quantity
-            updateAsset.price = price
-            updateAsset.save()
-            res.json({
-                status : 'Ok!',
-                message : 'Updated',
-                updateAt : updateAsset.updatedAt
+        if (!assets) {
+            return res.status(404).json({
+                message: 'Asset Not Found!'
+            });
+        }
+        
+        if (!status && !quantity) {
+            return res.json({
+                message : 'Asset failed to update'
             })
         }
+        assets.quantity = quantity !== undefined ? quantity : assets.quantity
+        assets.status = status !== undefined ? status :assets.status;
+        await assets.save();
 
+        return res.json({
+            message: 'Asset has been updated.'
+        });
     } catch (error) {
-        res.send(error)
-    }    
-}
+        console.log(error);
+       res.send(error)
+    }
+};
+
 module.exports = UpdateAsset
