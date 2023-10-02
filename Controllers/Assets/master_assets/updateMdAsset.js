@@ -26,7 +26,7 @@ const UpdateMdAsset = async (req, res) => {
             })
         }
         if (name) {
-            const nameAsset = await MD_Asset.findOne({
+            const existName = await MD_Asset.findOne({
                 where: {
                     name: name.replace(/^\w/, (c) => c.toUpperCase()),
                     id: {
@@ -35,7 +35,7 @@ const UpdateMdAsset = async (req, res) => {
                 }
             });
 
-            if (nameAsset) {
+            if (existName) {
                 return res.status(409).json({
                     message: `${name} already exists.`
                 });
