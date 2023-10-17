@@ -1,32 +1,16 @@
-const {History,Asset} = require('../../models')
+const {History, Asset,Attachment,Sequelize} = require('../../models')
 
 const getInspection = async (req,res)=>{
     try {
-        const {code} = req.params
+        const {search=''} = req.query
         const history = await History.findAll({
-            attributes :['asset_code','status','information'],
-            order: [['id', 'DESC']],
-        })
-        if (code) {
-            const history = await History.findOne({
-                where : {
-                    asset_code : code
+            where : {
+               name : { 
+                    [Sequelize.Op.like]  : `%${search}%`
                 },
-                include : [{
-                    model:Asset,
-                    as:'asset',
-                    attributes: ['name','status','quantity']
-                }],
-                order: [['id', 'DESC']],
-                attributes :['asset_code','status','information']
-            })
-           return res.json({
-                message : 'Ok',
-                result : {
-                    data : history
-                }
-            })
-        }
+            },
+            include : Asset
+        })
         res.json({
             message : 'Ok',
             result : {

@@ -4,15 +4,13 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
    await Promise.all([
-    // queryInterface.addConstraint('Assets',{
-    //   fields : ['asset_code'],
-    //   name :'fk_asset',
-    //   type : 'foreign key',
-    //   references : {
-    //     table : 'Asset_Categories',
-    //     field : 'Category_Code'
-    //   }
-    // }),
+
+    queryInterface.addConstraint('Assets',{
+      fields : ['asset_code'],
+      type : 'unique'
+    }),
+
+   
     queryInterface.addConstraint('MD_Assets',{
       fields : ['name'],
       type : 'unique'

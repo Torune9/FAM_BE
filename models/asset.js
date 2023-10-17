@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate({History}) {
       this.hasMany(History,{
         foreignKey : 'asset_code',
-        targetKey :'asset_code'
+        sourceKey : 'asset_code',
+        onDelete: 'CASCADE'
       })
     }
   }

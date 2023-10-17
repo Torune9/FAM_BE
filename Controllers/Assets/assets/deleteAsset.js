@@ -1,4 +1,5 @@
-const {Asset} = require('../../../models')
+const {Asset,History} = require('../../../models')
+
 
 const DeleteSoftAsset = async (req,res) => {
     try {
@@ -26,4 +27,28 @@ const DeleteSoftAsset = async (req,res) => {
 
 }
 
-module.exports = DeleteSoftAsset
+const DeletePermanentAsset = async(req,res)=>{
+    try {
+        const {id} = req.params
+        const asset = await Asset.destroy({
+            where : {
+                id : id
+            },
+        })
+
+       if (!asset) {
+           res.status(404).json({
+               message : `asset not found`
+           })
+        }else{
+           return res.json({
+            message : 'Asset has been permanently deleted'
+           })
+       }
+    } catch (error) {
+        console.log(error);
+        res.send(error.message)
+    }
+}
+
+module.exports = {DeleteSoftAsset,DeletePermanentAsset}

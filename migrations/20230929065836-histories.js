@@ -6,8 +6,13 @@ module.exports = {
    await Promise.all([
     queryInterface.addColumn('Histories','information',{
       type : Sequelize.STRING
-    })
-
+    }),
+    queryInterface.addColumn('Histories','inspection_date',{
+      type : Sequelize.DATE
+    }),
+    queryInterface.addColumn('Histories','name',{
+      type : Sequelize.STRING
+    }),
    ])
   },
 

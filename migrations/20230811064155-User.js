@@ -1,7 +1,5 @@
 'use strict';
 
-const { sequelize } = require('../models');
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -16,10 +14,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await Promise.all([
-      queryInterface.removeColumn('Users','reset_token'),
-      queryInterface.removeColumn('Users','exp_reset_token')
-    ])
     /**
      * Add reverting commands here.
      *
