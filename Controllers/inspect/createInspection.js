@@ -8,15 +8,15 @@ const createInspect = async (req,res)=>{
             asset_code : code
         }
     })
-    // const existingInspection = await History.findOne({
-    //     where: {
-    //         asset_code : code,
-    //         inspection_date : {
-    //             [Sequelize.Op.gt] : new Date()
-    //         }
+    const existingInspection = await History.findOne({
+        where: {
+            asset_code : code,
+            inspection_date : {
+                [Sequelize.Op.gt] : new Date()
+            }
          
-    //     }
-    //   });
+        }
+      });
 
      if (!status || !information) {
         return res.status(406).json({
@@ -26,12 +26,12 @@ const createInspect = async (req,res)=>{
       
     if (assets) {
         const date = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
-        // if (existingInspection) {
-        //     return res.status(400).json(
-        //         { message: 'The inspection has been carried out, please wait one week' }
-        //         );
-        // }else{
-        // }
+        if (existingInspection) {
+            return res.status(408).json(
+                { message: 'The inspection has been carried out, please wait one week' }
+                );
+        }else{
+        }
         await History.create({
          asset_code  :assets.asset_code,
          status : status,

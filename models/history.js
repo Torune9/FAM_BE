@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
      this.belongsTo(Asset,{
       foreignKey :'asset_code',
-      targetKey : 'asset_code'
+      targetKey : 'asset_code',
+      onDelete : 'CASCADE'
      })
 
      this.hasOne(status_category,{

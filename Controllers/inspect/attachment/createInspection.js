@@ -2,7 +2,7 @@ const {Attachment,Asset} = require('../../../models')
 
 const createAttachment = async (req,res)=>{
     try {
-        const {inspector,findings,file} = req.body
+        const {inspector,findings} = req.body
         const files = req.file
         const {code} = req.params
         const asset = await Asset.findOne({
@@ -10,28 +10,27 @@ const createAttachment = async (req,res)=>{
                 asset_code : code
             }
         })
-        const data = {
-            asset_code : code,
-            inspector : inspector,
-            findings : findings,
-            file : files.originalname
-
-        }
         
-        if (!asset) {
+        if (!asset || !files) {
             return res.status(404)
             .json({
                 message : 'Inspection failed to added'
             })
         }
-
+        
         if (!findings || !inspector) {
-           return res.status(406)
+            return res.status(406)
             .json({
                 message : `field can't be empty`
             })
         }
-
+        
+        const data = {
+            asset_code : code,
+            inspector : inspector,
+            findings : findings,
+            file : files.originalname
+        }
 
             await Attachment.create(data)
             res.json({

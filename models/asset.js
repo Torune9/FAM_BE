@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(History,{
         foreignKey : 'asset_code',
         sourceKey : 'asset_code',
-        onDelete: 'CASCADE'
       })
     }
   }

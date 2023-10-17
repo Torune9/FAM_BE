@@ -21,7 +21,7 @@ const upload = multer({
 const filter = (err,req,res,next)=>{
     if(err.code === "LIMIT_FILE_TYPES"){
         res.status(406).json({
-           message : 'Not Allowed'
+           message : 'Only images or .pdf can allowed '
         })
     }
     if (err.code === "LIMIT_FILE_SIZE") {

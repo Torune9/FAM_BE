@@ -17,9 +17,9 @@ const  UpdateMdAsset = require('../Controllers/Assets/master_assets/updateMdAsse
 
 const  GetAsset =  require('../Controllers/Assets/assets/getAsset')
 const  AddAsset =  require('../Controllers/Assets/assets/addAsset')
-const  {DeleteSoftAsset,DeletePermanentAsset} = require('../Controllers/Assets/assets/deleteAsset')
+const  DeleteSoftAsset = require('../Controllers/Assets/assets/deleteAsset')
 const  UpdateAsset = require('../Controllers/Assets/assets/updateAsset')
-const RestoreAsset = require('../Controllers/Assets/assets/restoreAsset')
+const  RestoreAsset = require('../Controllers/Assets/assets/restoreAsset')
 
 const createInspect = require('../Controllers/inspect/createInspection')
 const getInspection = require('../Controllers/inspect/getInspection')
@@ -49,7 +49,6 @@ routerAsset.post('/asset',AddAsset)
 routerAsset.put('/asset/:id',UpdateAsset)
 routerAsset.delete('/asset/:id',DeleteSoftAsset)
 routerAsset.put('/asset/restore/:id',RestoreAsset)
-routerAsset.delete('/asset/:id/deleted',DeletePermanentAsset)
 
 routerAsset.post('/asset/:code/inspection',auditorAcc,createInspect)
 routerAsset.get('/asset/history/',getInspection)
