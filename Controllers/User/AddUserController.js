@@ -5,25 +5,39 @@ const AddUserController = async (req,res)=>{
     try{
         const {username,password,email} = req.body
         const hasPw = await bcrypt.hash(password,10)
-    if (username.trim() == "" || password.trim() == "") {
-        res.send("Username dan Password tidak boleh")
+        const  existEmail = await User.findOne({
+            where : {
+                email :  email
+            }
+        })
+
+    if (username.trim() == "" || password.trim() == "" || email.trim() == "") {
+        return res.status(400).json({
+            message : `username and password can't be empty`
+        })
+    }
+
+    if (existEmail) {
+       return res.status(400).json({
+            message : 'Email already exist'
+        })
     }
 
         const user = {
             username : username,
             password:hasPw,
             email : email,
-            role_id : "USER",
+            role_id : "ADMIN",
         } 
-        const newUSer = await User.create(user)
+        await User.create(user)
         res.json({
-            message : "Data berhasil dibuat",
+            message : "Register success",
             status : res.statusCode,
-            createdAt : newUSer.createdAt,
-            updatedAt : newUSer.updatedAt
         })
-    }catch(err){
-            console.log(err);
+    }catch(error){
+           return res.status(400).json({
+                error  :error
+            })
     }
 }
 

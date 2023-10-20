@@ -12,21 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate({Asset,status_category,Attachment}) {
       // define association here
      this.belongsTo(Asset,{
-      foreignKey :'asset_code',
-      targetKey : 'asset_code',
-      onDelete : 'CASCADE'
+      foreignKey :'id',
+      targetKey : 'id',
      })
 
-     this.hasOne(status_category,{
-      foreignKey : 'status',
-      sourceKey : 'status',
-      as : 'status category'
+     this.belongsTo(status_category,{
+      foreignKey : 'id',
+      targetKey: 'id',
      })
      
      this.hasOne(Attachment,{
-       foreignKey : 'asset_code',
-       sourceKey : 'asset_code',
-       as : 'attachment'
+       foreignKey : 'id',
+       sourceKey : 'id',
       })
     }
   }
