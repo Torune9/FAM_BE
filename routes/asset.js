@@ -21,8 +21,8 @@ const  DeleteSoftAsset = require('../Controllers/Assets/assets/deleteAsset')
 const  UpdateAsset = require('../Controllers/Assets/assets/updateAsset')
 const  RestoreAsset = require('../Controllers/Assets/assets/restoreAsset')
 
-const createInspect = require('../Controllers/inspect/createInspection')
-const getInspection = require('../Controllers/inspect/getInspection')
+const createInspect = require('../Controllers/inspect/history/createInspection')
+const getInspection = require('../Controllers/inspect/history/getInspection')
 
 
 const createAttachment = require('../Controllers/inspect/attachment/createInspection')
@@ -30,6 +30,7 @@ const getAttachmentInspect = require('../Controllers/inspect/attachment/getAttac
 
 
 const getStatusCategory = require('../Controllers/inspect/category/getStatusCategory')
+const createStatusCategory = require('../Controllers/inspect/category/createStatusCategory')
 
 
 
@@ -53,10 +54,11 @@ routerAsset.put('/asset/restore/:id',RestoreAsset)
 routerAsset.post('/asset/:code/inspection',auditorAcc,createInspect)
 routerAsset.get('/asset/history/',getInspection)
 
-routerAsset.post('/asset/attachment/:code',upload.single('files'),createAttachment)
+routerAsset.post('/asset/attachment/:code',upload.array('files'),createAttachment)
 routerAsset.get('/asset/attachment/:code',getAttachmentInspect)
 
 routerAsset.get('/asset/status',getStatusCategory)
+routerAsset.post('/asset/status',createStatusCategory)
 
 routerAsset.use(filter)
 

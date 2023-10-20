@@ -7,7 +7,7 @@ const AddUserController = require('../Controllers/User/AddUserController')
 const updateUserController = require('../Controllers/User/UpdateUserController')
 const DeleteController = require('../Controllers/User/DeleteUserController')
 
-router.post('/api/add',AddUserController.AddUserController)
+router.post('/api/register',AddUserController.AddUserController)
 
 router.put('/api/update',updateUserController.updateUserController)
 
