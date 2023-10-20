@@ -19,7 +19,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       file : {
-        type : Sequelize.STRING
+        type : Sequelize.ARRAY(Sequelize.STRING),
+        allowNull : true
       },
       createdAt: {
         allowNull: false,

@@ -10,7 +10,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique : true
+      },
+      status_code : {
+        type  : Sequelize.STRING,
+        unique : true
       },
       createdAt: {
         allowNull: false,
