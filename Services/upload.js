@@ -11,7 +11,7 @@ const fileFilter = (req,file,cb)=>{
     cb(null,true)
 }
 const upload = multer({
-    dest : 'uploads/files',
+    dest : 'uploads',
     limits : {
         fileSize : MAX_SIZE
     },
