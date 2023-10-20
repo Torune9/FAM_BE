@@ -3,7 +3,6 @@ const {Admin,User} = require('../../models')
 const updateUserController = async (req,res)=>{
     try{
         const role = [{
-            USER:"USER",
             ADMIN:"ADMIN",
             SYSADMIN:"SYSADMIN",
             AUDIT:"AUDITHOR"
