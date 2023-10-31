@@ -1,5 +1,5 @@
 const {User} = require('../../models')
-const sendEmail = require('../../Services/mailer')
+const sendEmail = require('../../Services/common/mailer')
 const crypto = require('crypto')
 const ejs = require('ejs')
 const path = require('path')
@@ -18,7 +18,7 @@ const ForgotController = async (req,res)=>{
         user.reset_token = randomNumber
         user.exp_reset_token = exp 
         user.save()
-        const urlReset = `${req.protocol}://${req.get('host')}/api/reset-password/${user.reset_token}`
+        const urlReset = `${req.protocol}://${req.get('host')}/reset-password/${user.reset_token}`
         const pathLayout = path.join(__dirname,'../../views/layoutEmail.ejs')
         const layout = await ejs.renderFile(pathLayout,{
             url : urlReset,
@@ -39,7 +39,7 @@ const ForgotController = async (req,res)=>{
     }else{
         res.status(404)
         res.json({
-            message : `Email tidak ditemukan ${email}`
+            message : `Email not found`
         })
     }
 
