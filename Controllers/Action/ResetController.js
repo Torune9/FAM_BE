@@ -8,8 +8,8 @@ const ResetController = async (req,res)=>{
         if(user){
             if(user.exp_reset_token > new Date())
             {
-                const updateHash =  await bcrypt.hash(newPassword,10)
-                user.password = updateHash
+                const hasNewPassword = await bcrypt.hash(newPassword,10)
+                user.password = hasNewPassword
                 user.reset_token = null
                 res.json({
                     message : "Password berhasil di reset",
@@ -20,15 +20,18 @@ const ResetController = async (req,res)=>{
                     message : "Request Timed Out"
                 })
             }
-            user.save()
+            await user.save()
         }else{
-            res.json({
+            res.status(400).json({
                 message : "Token Tidak Valid"
             })
         }
 
     }catch(err){
         console.log(err);
+        res.json({
+            error : err
+        })
     }
    
 }
