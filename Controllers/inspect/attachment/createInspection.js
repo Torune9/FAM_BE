@@ -10,10 +10,9 @@ const createAttachment = async (req,res)=>{
                 asset_code : code
             }
         })
-        const testing = files.map(file => {
-           return file.originalname
+        const filename = files.map(file => {
+           return file.filename
         })
-        console.log(testing);
         if (!asset || !files) {
             return res.status(406).json({
                 message : 'Inspection failed to added',
@@ -31,13 +30,13 @@ const createAttachment = async (req,res)=>{
             asset_code : code,
             inspector : inspector,
             findings : findings,
-            file : testing
+            file : filename
         }
 
         await Attachment.create(data)
             res.json({
                 message : 'Inspection has been created',
-                file : testing
+                file : files
 
             })
         
