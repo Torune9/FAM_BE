@@ -21,9 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       targetKey: 'id',
      })
      
-     this.hasOne(Attachment,{
-       foreignKey : 'id',
-       sourceKey : 'id',
+     this.hasMany(Attachment,{
+       foreignKey : 'asset_code',
+       sourceKey : 'asset_code',
+       as : 'attachments'
       })
     }
   }

@@ -4,7 +4,14 @@ const getAttachmentInspect = async (req,res)=>{
     try {
         const {code} = req.params
         const attachments = await Attachment.findAll({
-            include : [{model : History,as:'histories'}]
+            where : {
+                asset_code :code
+            },
+            include : [{
+                model :History,
+                as : 'histories',
+                attributes : ['information','status']
+            }]
         })
         res.json({
             data : attachments

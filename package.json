@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon index",
     "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:down": "npx sequelize-cli db:migrate:undo:all",
     "seed:all": "npx sequelize-cli db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,7 +25,8 @@
     "nodemailer": "^6.9.4",
     "pg": "^8.11.1",
     "randomatic": "^3.1.1",
-    "sequelize": "^6.32.1"
+    "sequelize": "^6.32.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",

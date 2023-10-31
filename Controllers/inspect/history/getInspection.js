@@ -9,7 +9,11 @@ const getInspection = async (req,res)=>{
                     [Sequelize.Op.like]  : `%${search}%`
                 },
             },
-            include : Asset
+            include : [{
+                model : Attachment,
+                attributes  :['asset_code','id','inspector','findings','file'],
+                as : 'attachments'
+            }]
         })
         res.json({
             message : 'Ok',

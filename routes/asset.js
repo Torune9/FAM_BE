@@ -1,7 +1,7 @@
 const routerAsset = require('express').Router()
-const {authenticateAdmin} = require('../Services/auth')
-const {auditorAcc} = require('../Services/auditor')
-const {filter,upload} = require('../Services/upload')
+const {authenticateAdmin} = require('../Services/authorization/auth')
+const {auditorAcc} = require('../Services/authorization/auditor')
+const {filter,upload} = require('../Services/common/upload')
 
 
 
@@ -59,7 +59,9 @@ routerAsset.get('/asset/attachment/:code',getAttachmentInspect)
 
 routerAsset.get('/asset/status',getStatusCategory)
 routerAsset.post('/asset/status',createStatusCategory)
+routerAsset.get('/uploads/:file')
 
 routerAsset.use(filter)
+
 
 module.exports = routerAsset

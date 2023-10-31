@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       findings: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1234)
       },
       file : {
         type : Sequelize.ARRAY(Sequelize.STRING),
