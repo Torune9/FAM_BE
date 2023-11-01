@@ -4,13 +4,13 @@ require('dotenv').config();
 // "use strict";
 
 const transporter = nodemailer.createTransport({
-  // host: "sandbox.smtp.mailtrap.io",
-  // port: 587,
-  // secure : false,
-  service :'gmail',
+  host: "sandbox.smtp.mailtrap.io",
+  port: 587,
+  secure : false,
+  // service :'gmail',
   auth: {
-    user: process.env.GMAIL_USERNAME,
-    pass : process.env.GMAIL_PASSWORD
+    user: process.env.EMAIL_USERNAME,
+    pass : process.env.EMAIL_PASSWORD
   }
 });
 
