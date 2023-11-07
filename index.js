@@ -18,10 +18,6 @@ app.use('/uploads', express.static('uploads'));
 
 app.use(routes)
 
-app.get('/',(req,res)=>{
-    res.render('layoutEmail')
-})
-
 app.listen(3000,()=>{
     console.log("Running In Port 3000");
 })

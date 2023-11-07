@@ -14,22 +14,22 @@ const updateUserController = async (req,res)=>{
         const validate = role.some(data => Object.values(data).includes(roleId))
 
         if(!update){
-            res.json({
-                message : `${email} tidak di temukan`,
+            return res.status(404).json({
+                message : `${email} not found`,
             })
         }
         if (validate) {
             update.role_id = roleId
             update.updatedAt = new Date()
             update.save()
-            res.json({
+            return res.json({
                 message : `Role ${update.username} menjadi ${update.role_id}`,
                 status : "Updated",
                 updatedAt : update.updatedAt
             }) 
         }else{
-            res.json({
-                message : "Role tidak ada"
+            return res.status(404).json({
+                message : "Role note found"
             })
         }
     }catch(err){
