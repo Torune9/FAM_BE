@@ -1,8 +1,13 @@
 const {Asset_Category,Sequelize} = require('../../../models')
 const getCategories = async (req, res) => {
     try {
+        // const limit = 5
         const { status = false, 
-                search = '' } = req.query;
+                search = '',
+                // page= 1, 
+            } = req.query;
+
+        //  const skip = (page - 1)  * limit
 
         const categories = await Asset_Category.findAll({
             attributes: ['id', 'category_name', 'category_code', 'is_deleted'],
@@ -12,7 +17,9 @@ const getCategories = async (req, res) => {
                category_name: {
                 [Sequelize.Op.like]: `%${search}%`
             }
-            }
+            },
+            // limit : limit,
+            // offset : Math.abs(skip),
         });
 
         res.json({
