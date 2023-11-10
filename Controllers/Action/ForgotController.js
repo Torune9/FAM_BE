@@ -1,5 +1,5 @@
 const {User} = require('../../models')
-const sendEmail = require('../../Services/common/mailer')
+const sendEmail = require('../../Services/utils/mailer')
 const crypto = require('crypto')
 const ejs = require('ejs')
 const path = require('path')
