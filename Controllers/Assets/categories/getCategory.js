@@ -31,7 +31,7 @@ const getCategories = async (req, res) => {
         });
     } catch (error) {
         res.json({
-            error: error.message // Use error.message to get the error message
+            error: error.message
         });
     }
 };
