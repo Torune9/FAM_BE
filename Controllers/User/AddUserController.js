@@ -1,13 +1,16 @@
-const {User} = require('../../models')
+const {User, Sequelize} = require('../../models')
 const bcrypt = require('bcrypt')
 
 const AddUserController = async (req,res)=>{
     try{
         const {username,password,email} = req.body
         const hasPw = await bcrypt.hash(password,10)
-        const  existEmail = await User.findOne({
+        const existUser = await User.findOne({
             where : {
-                email :  email
+               [Sequelize.Op.or]  : [
+                {username : username},
+                {email : email}
+               ]
             }
         })
 
@@ -17,9 +20,9 @@ const AddUserController = async (req,res)=>{
         })
     }
 
-    if (existEmail) {
+    if (existUser) {
        return res.status(400).json({
-            message : 'Email already exist'
+            message : 'User already exist'
         })
     }
 
@@ -35,6 +38,7 @@ const AddUserController = async (req,res)=>{
             status : res.statusCode,
         })
     }catch(error){
+        return res.send(error)
            return res.status(400).json({
                 error  :error
             })
