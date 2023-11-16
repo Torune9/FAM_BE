@@ -24,7 +24,6 @@ const DeleteSoftAsset = async (req,res) => {
     } catch (error) {
         res.send(error.message)
     }
-
 }
 
 module.exports = DeleteSoftAsset
