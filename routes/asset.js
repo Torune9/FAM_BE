@@ -1,6 +1,6 @@
 const routerAsset = require('express').Router()
-const {authenticateAdmin} = require('../Services/authorization/admin')
-const {auditorAcc} = require('../Services/authorization/auditor')
+const authenticateAdmin = require('../Services/authorization/admin')
+const auditorAcc = require('../Services/authorization/auditor')
 const {filter,upload} = require('../Services/utils/upload')
 
 

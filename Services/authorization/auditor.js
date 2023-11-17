@@ -23,4 +23,4 @@ const auditorAcc = (req, res, next) => {
 };
 
 
-module.exports = { auditorAcc };
+module.exports = auditorAcc;
