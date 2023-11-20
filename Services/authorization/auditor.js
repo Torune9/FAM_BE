@@ -12,11 +12,11 @@ const auditorAcc = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    if (decoded.role !== 'AUDITHOR') {
-      return res.status(403).json({ message: 'Access denied' });
+    if (decoded.role == 'AUDITHOR' || decoded.role == 'SYSADMIN') {
+      req.user = decoded; 
+      return next();
     }
-    req.user = decoded; 
-    next();
+    return res.status(403).json({ message: 'Access denied' });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

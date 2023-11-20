@@ -11,12 +11,12 @@ const ForgotController = async (req,res)=>{
         const {email} = req.body
         const user = users.find((user)=>user.email == email)
         const randomBytes = crypto.randomBytes(4);
-        const randomNumber = parseInt(randomBytes.toString('hex'), 16);
+        const token = parseInt(randomBytes.toString('hex'), 16);
 
         if(user){
-        const exp = new Date(Date.now() + 900000)
-        user.reset_token = randomNumber
-        user.exp_reset_token = exp 
+        const expToken = new Date(Date.now() + 900000)
+        user.reset_token = token
+        user.exp_reset_token = expToken 
         user.save()
         const urlReset = `${req.protocol}://${req.get('host')}/reset-password/${user.reset_token}`
         const pathLayout = path.join(__dirname,'../../views/layoutEmail.ejs')
