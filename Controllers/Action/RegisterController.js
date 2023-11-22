@@ -1,7 +1,7 @@
 const {User, Sequelize} = require('../../models')
 const bcrypt = require('bcrypt')
 
-const AddUserController = async (req,res)=>{
+const register = async (req,res)=>{
     try{
         const {username,password,email} = req.body
         const hasPw = await bcrypt.hash(password,10)
@@ -30,7 +30,7 @@ const AddUserController = async (req,res)=>{
             username : username,
             password:hasPw,
             email : email,
-            role_id : "ADMIN",
+            role_id : "USER",
         } 
         await User.create(user)
         res.json({
@@ -45,4 +45,4 @@ const AddUserController = async (req,res)=>{
     }
 }
 
-module.exports = {AddUserController}
+module.exports = {register}

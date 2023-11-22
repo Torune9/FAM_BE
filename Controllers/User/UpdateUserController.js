@@ -2,35 +2,40 @@ const {Admin,User} = require('../../models')
 
 const updateUserController = async (req,res)=>{
     try{
+        const {id} = req.params
+        const {roleId} = req.body
         const role = [{
+            USER:"USER",
             ADMIN:"ADMIN",
             SYSADMIN:"SYSADMIN",
             AUDIT:"AUDITHOR"
         }]
-        const users = await User.findAll()
-
-        const {email,roleId} = req.body
-        const update = users.find((data)=> data.email == email)
+        const users = await User.findOne({
+            where : {
+                id : id
+            }
+        })
         const validate = role.some(data => Object.values(data).includes(roleId))
 
-        if(!update){
+        if (!users) {
             return res.status(404).json({
-                message : `${email} not found`,
+                message : "user note found"
             })
-        }
-        if (validate) {
-            update.role_id = roleId
-            update.updatedAt = new Date()
-            update.save()
-            return res.json({
-                message : `Role ${update.username} menjadi ${update.role_id}`,
-                status : "Updated",
-                updatedAt : update.updatedAt
-            }) 
         }else{
-            return res.status(404).json({
-                message : "Role note found"
-            })
+            if (!validate) {
+              return res.status(404).json({
+                message : "role note found"
+              })  
+            }else{
+                users.role_id = roleId
+                users.updatedAt = new Date()
+                users.save()
+                return res.json({
+                    message : `Role ${users.username} menjadi ${users.role_id}`,
+                    status : "Updated",
+                    updatedAt : users.updatedAt
+                }) 
+            }
         }
     }catch(err){
             console.log(err);

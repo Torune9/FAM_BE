@@ -14,7 +14,7 @@ const AddAsset = async (req,res)=>{
        
         if (!name || !quantity || !created_by || !code) {
             return res.status(406).json({
-                message : `All fields can't be empty`
+                message : `Forms can't be empty`
             })
         }
  

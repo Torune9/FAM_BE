@@ -17,7 +17,7 @@ const AddMdAsset = async (req,res)=>{
 
     if(!name || !code || !price){
         res.status(406).json({
-            message : 'Form all required',
+            message : `Forms can't be empty`,
         })
     }else if (rule.test(name) || rule.test(code) || rule.test(price)) {
         res.status(406).json({

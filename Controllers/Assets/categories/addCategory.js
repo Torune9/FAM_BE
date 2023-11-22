@@ -10,7 +10,7 @@ const AddCategories = async (req,res)=>{
 
     if(!name || !code){
         res.status(406).json({
-            message : `Form can't empty`
+            message : `Forms can't empty`
         })
     }else if (rule.test(name) || rule.test(code)) {
         res.status(406).json({
