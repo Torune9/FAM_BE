@@ -1,29 +1,32 @@
-const {User} = require('../../models')
+const {User, Sequelize} = require('../../models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
 
 const LoginController = async (req,res)=>{ 
     try{
-        const users = await User.findAll()
         const {username,password} = req.body
-        const authUser = users.find(user => user.username == username)
-        if(authUser){
-            const validPw = await bcrypt.compare(password,authUser.password)
+        const users = await User.findOne({
+            where : {
+                username : username,
+                active : true
+            }
+        })
+        if(users){
+            const validPw = await bcrypt.compare(password,users.password)
                 if (validPw){
                     const secretJWT = process.env.JWT_SECRET_KEY
                     const token = jwt.sign({
-                        username : authUser.username,
-                        email : authUser.email,
-                        role : authUser.role_id
+                        username : users.username,
+                        email : users.email,
+                        role : users.role_id
                     },secretJWT)
                     const message = {
                         statusCode: res.statusCode,
                         message: "Login success",
                         data: {
                         user: {
-                            name: authUser.username,
-                            role : authUser.role_id
+                            name: users.username,
+                            role : users.role_id
                         },
                         token: token
                         }

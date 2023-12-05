@@ -3,7 +3,6 @@ const sendEmail = require('../../Services/utils/mailer')
 const crypto = require('crypto')
 const ejs = require('ejs')
 const path = require('path')
-require('dotenv').config()
 
 const ForgotController = async (req,res)=>{
     try{

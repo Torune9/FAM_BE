@@ -14,9 +14,9 @@ const register = async (req,res)=>{
             }
         })
 
-    if (username.trim() == "" || password.trim() == "" || email.trim() == "") {
+    if (!username || !password || !email) {
         return res.status(400).json({
-            message : `username and password can't be empty`
+            message : `form can't be empty`
         })
     }
 

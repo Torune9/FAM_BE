@@ -1,8 +1,21 @@
-const {User} = require('../../models')
+const {User,Sequelize} = require('../../models')
 
 const GetUserController = async (req,res)=>{
     try{
-        const users = await User.findAll()
+        const { 
+            search = '',
+            isActive = true  } = req.query;
+        const users = await User.findAll({
+            where : {
+                username: {
+                    [Sequelize.Op.like]: `%${search}%`
+                },
+                active : isActive,
+                role_id : {
+                    [Sequelize.Op.ne] : 'SYSADMIN'
+                }
+            },
+        })
         res.json({
             code:res.statusCode,
             data : users

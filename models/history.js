@@ -32,7 +32,9 @@ module.exports = (sequelize, DataTypes) => {
     asset_code: DataTypes.STRING,
     name : DataTypes.STRING,
     status: DataTypes.STRING,
+    inspector : DataTypes.STRING,
     information : DataTypes.STRING,
+    file : DataTypes.STRING,
     inspection_date :DataTypes.DATE
   }, {
     sequelize,

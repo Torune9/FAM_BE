@@ -13,6 +13,12 @@ module.exports = {
     queryInterface.addColumn('Histories','name',{
       type : Sequelize.STRING
     }),
+    queryInterface.addColumn('Histories','inspector',{
+      type : Sequelize.STRING
+    }),
+    queryInterface.addColumn('Histories','file',{
+      type : Sequelize.STRING
+    }),
    ])
   },
 

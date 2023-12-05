@@ -6,6 +6,7 @@ const updateUserController = async (req,res)=>{
         const {roleId} = req.body
         const role = [{
             USER:"USER",
+            INSPECTOR:"INSPECTOR",
             ADMIN:"ADMIN",
             SYSADMIN:"SYSADMIN",
             AUDIT:"AUDITHOR"

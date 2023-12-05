@@ -1,7 +1,8 @@
 const {History,Asset, Sequelize} = require('../../../models')
 const createInspect = async (req,res)=>{
-    const {status,information} = req.body
+    const {inspector,status,information} = req.body
     const {code} = req.params
+    const file = req.file
    try {
     const assets = await Asset.findOne({
         where : {
@@ -18,7 +19,7 @@ const createInspect = async (req,res)=>{
         }
       });
 
-     if (!status || !information) {
+     if (!status || !information || !file || !inspector) {
         return res.status(406).json({
             message : 'Field cant be empty'
         })
@@ -33,11 +34,13 @@ const createInspect = async (req,res)=>{
         }else{
         }
         await History.create({
-         asset_code  :assets.asset_code,
-         status : status,
-         information :information,
-         inspection_date: date,
-         name : assets.name
+            asset_code  :assets.asset_code,
+            name : assets.name,
+            status : status,
+            inspector : inspector,
+            information :information,
+            inspection_date: date,
+            file : file.filename
         })
     
         return res.json({

@@ -1,7 +1,10 @@
 const routerAsset = require('express').Router()
 const authenticateAdmin = require('../Services/authorization/admin')
 const auditorAcc = require('../Services/authorization/auditor')
-const {filter,upload} = require('../Services/utils/upload')
+const inspectorAcc = require('../Services/authorization/inspector')
+const {filters,uploads} = require('../Services/utils/attachmentsUploads')
+const {filter,upload} = require ('../Services/utils/imageUploads')
+const path = require('path')
 
 
 
@@ -49,19 +52,19 @@ routerAsset.get('/asset',GetAsset)
 routerAsset.post('/asset',AddAsset)
 routerAsset.put('/asset/:id',UpdateAsset)
 routerAsset.delete('/asset/:id',DeleteSoftAsset)
-routerAsset.put('/asset/restore/:id',RestoreAsset)
+routerAsset.put('/asset/:id/restore',RestoreAsset)
 
-routerAsset.post('/asset/:code/inspection',auditorAcc,createInspect)
+routerAsset.post('/asset/:code/inspection',inspectorAcc,upload.single('files'),createInspect)
 routerAsset.get('/asset/history/',getInspection)
+routerAsset.use(filter)
 
-routerAsset.post('/asset/attachment/:code',auditorAcc,upload.array('files'),createAttachment)
+routerAsset.post('/asset/attachment/:code',auditorAcc,uploads.array('files'),createAttachment)
 routerAsset.get('/asset/attachment/:code',getAttachmentInspect)
+routerAsset.use(filters)
 
 routerAsset.get('/asset/status',getStatusCategory)
 routerAsset.post('/asset/status',createStatusCategory)
 routerAsset.get('/uploads/:file')
-
-routerAsset.use(filter)
 
 
 module.exports = routerAsset
