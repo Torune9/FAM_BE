@@ -18,6 +18,7 @@ const ResetController = async (req,res)=>{
                 const hasNewPassword = await bcrypt.hash(newPassword,10)
                 user.password = hasNewPassword
                 user.reset_token = null
+                await user.save()
                 return res.json({
                     message : "Reset password has been success",
                 })
@@ -26,7 +27,6 @@ const ResetController = async (req,res)=>{
                     message : "Request Timed Out"
                 })
             }
-            await user.save()
         }else{
             return res.status(400).json({
                 message : "Invalid Token"
