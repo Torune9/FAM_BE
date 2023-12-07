@@ -11,7 +11,7 @@ const DeleteSoftMdAsset = async (req,res) => {
         })
 
        if (!mdAsset) {
-           res.json({
+           res.status(400).json({
                message : `${id} not found`
            })
         }else{

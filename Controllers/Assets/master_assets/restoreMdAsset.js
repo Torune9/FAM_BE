@@ -11,7 +11,7 @@ const RestoreMdAsset = async (req,res)=>{
         )
         
         if (data) {
-            await Asset.update(
+            await MD_Asset.update(
                 {is_deleted : false},
                 {
                     where : {
