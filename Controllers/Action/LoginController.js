@@ -26,20 +26,22 @@ const LoginController = async (req,res)=>{
                         data: {
                         user: {
                             name: users.username,
-                            role : users.role_id
+                            role : users.role_id,
+                            id : users.id,
+                            image : users.img
                         },
                         token: token
                         }
                     }
                     res.json(message)
                 }else{
-                    res.json({
+                    res.status(406).json({
                             code : 406,
                             message : "Wrong password!"
                         })
                     } 
             }else{
-                res.json({
+                res.status(406).json({
                     code : 406,
                     message : "Login failed!"
                 })
