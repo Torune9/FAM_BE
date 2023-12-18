@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     role_id: DataTypes.STRING,
     active : DataTypes.BOOLEAN,
     reset_token : DataTypes.STRING,
+    img : DataTypes.STRING,
     exp_reset_token : DataTypes.DATE
   }, {
     sequelize,
