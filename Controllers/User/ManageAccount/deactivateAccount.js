@@ -12,7 +12,7 @@ const deactivateAccount = async(req,res)=>{
             users.active = value
             await users.save()
             return res.json({
-                message : 'User has been deactivated'
+                message : 'Ok'
             })
         }
     } catch (error) {
