@@ -1,5 +1,5 @@
 const multer = require('multer')
-const MAX_SIZE = 5000000
+const MAX_SIZE = 1000000
 const path = require('path')
 const randomize = require('randomatic')
 
