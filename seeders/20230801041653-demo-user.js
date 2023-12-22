@@ -31,6 +31,15 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     },
+    {
+      username: 'kamal',
+      password: await bcrypt.hash('123',10),
+      email: 'example4@example.com',
+      role_id : 'INSPECTOR',
+      active : true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
   ]);
   },
 
@@ -41,5 +50,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete('Users', null, {})
   }
 };

@@ -148,7 +148,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Asset_Categories', null, {});
+    await queryInterface.bulkDelete('Assets', null, {});
     /**
      * Add commands to revert seed here.
      *
