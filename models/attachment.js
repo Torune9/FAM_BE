@@ -9,19 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({History}) {
-      this.belongsTo(History,{
-        foreignKey : 'asset_code',
-        targetKey : 'asset_code',
-        as : 'histories'
+    static associate({History,Asset}) {
+      this.hasMany(History,{
+        foreignKey : 'attachmentId'
+      })
+      this.hasOne(Asset,{
+        foreignKey : 'id'
       })
     }
   }
   Attachment.init({
     asset_code: DataTypes.STRING,
     inspector: DataTypes.STRING,
-    findings: DataTypes.STRING,
-    file : DataTypes.ARRAY(DataTypes.STRING)
+    attachments : DataTypes.ARRAY(DataTypes.STRING),
+    information : DataTypes.STRING,
+    attachmentId : DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Attachment',
