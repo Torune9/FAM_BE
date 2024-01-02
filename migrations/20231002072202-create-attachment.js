@@ -9,17 +9,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      attachmentId : {
+        type: Sequelize.INTEGER,
+        allowNull : false
+      },
       asset_code: {
         type: Sequelize.STRING,
       },
       inspector: {
         type: Sequelize.STRING
       },
-      findings: {
-        type: Sequelize.STRING(1234)
-      },
-      file : {
+      attachments : {
         type : Sequelize.ARRAY(Sequelize.STRING),
+        allowNull : true
+      },
+      information :{
+        type : Sequelize.STRING,
         allowNull : true
       },
       createdAt: {

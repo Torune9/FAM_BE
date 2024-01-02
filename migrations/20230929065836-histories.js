@@ -4,21 +4,25 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
    await Promise.all([
-    queryInterface.addColumn('Histories','information',{
-      type : Sequelize.STRING
-    }),
     queryInterface.addColumn('Histories','inspection_date',{
       type : Sequelize.DATE
     }),
     queryInterface.addColumn('Histories','name',{
       type : Sequelize.STRING
     }),
+    queryInterface.addColumn('Histories','attachmentId',{
+      type : Sequelize.INTEGER
+    }),
+    queryInterface.addColumn('Histories','assetId',{
+      type : Sequelize.INTEGER
+    }),
     queryInterface.addColumn('Histories','inspector',{
       type : Sequelize.STRING
     }),
-    queryInterface.addColumn('Histories','file',{
+    queryInterface.addColumn('Histories','information',{
       type : Sequelize.STRING
     }),
+
    ])
   },
 
