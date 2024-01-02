@@ -17,7 +17,7 @@ const ForgotController = async (req,res)=>{
         user.reset_token = token
         user.exp_reset_token = expToken 
         user.save()
-        const urlReset = `${req.protocol}://${req.get('host')}/reset-password/${user.reset_token}`
+        const urlReset = `${req.protocol}://${req.get('host')}/user/newPassword/${user.reset_token}`
         const pathLayout = path.join(__dirname,'../../views/layoutEmail.ejs')
         const layout = await ejs.renderFile(pathLayout,{
             url : urlReset,
