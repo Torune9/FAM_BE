@@ -15,7 +15,7 @@ const GetAsset = async (req,res)=>{
             },
             include : [{
                 model  : History,
-                attributes:['name','status','information','inspection_date']
+                attributes:['name','status','inspection_date']
             }]
         })
 
