@@ -1,24 +1,27 @@
 const {User, Sequelize} = require('../../models')
 const fs = require('fs')
-const UploadImageUser = async (req,res)=>{
+const manageUser = async (req,res)=>{
     try {
         const file = req.file
         const {id} = req.params
+        const {username,email} = req.body
         const users = await User.findOne({
             where : {
                 id : id
             }
         })
-        if (!file) {
-            return res.status(404).json({
-                message : 'File not found'
-            })
-        }
+       
         if (users) {
-            if (users.img) {
+            
+            const existFile = fs.existsSync(`uploads/${users.img}`) 
+
+            if (users.img && existFile && file) {
                 fs.unlink(`uploads/${users.img}`,(error)=>console.log(error))
             }
+            
             users.img  = file.filename
+            users.username = !username ? users.username : username
+            users.email = !email ? users.email : email
             await users.save()
             return res.json({
                 message: 'Updated',
@@ -68,4 +71,4 @@ const getImage = async (req,res)=>{
     }
 }
 
-module.exports ={ UploadImageUser,getImage}
+module.exports ={ manageUser,getImage}
