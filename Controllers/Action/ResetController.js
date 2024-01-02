@@ -19,18 +19,21 @@ const ResetController = async (req,res)=>{
                 user.password = hasNewPassword
                 user.reset_token = null
                 await user.save()
-                return res.json({
-                    message : "Reset password has been success",
+                    return res.render('closeTab',{
+                    message : `Thank you,The password has been changed, you can close this tab`,
+                    code : res.statusCode
                 })
             }else{
-                res.status(408).json({
-                    message : "Request Timed Out"
+                return res.status(408).render('closeTab',{
+                    message : 'Request Time Out',
+                    code : res.statusCode
                 })
             }
         }else{
-            return res.status(400).json({
-                message : "Invalid Token"
-            })
+            return res.status(406).render('closeTab',{
+                    message : 'Invalid Token',
+                    code: res.statusCode
+                })
         }
 
 
@@ -43,4 +46,12 @@ const ResetController = async (req,res)=>{
    
 }
 
-module.exports ={ResetController}
+const sendLink = (req,res)=>{
+    res.render('resetPassword',{
+            token : req.params.token
+        }
+    )
+}
+
+
+module.exports ={ResetController,sendLink}
