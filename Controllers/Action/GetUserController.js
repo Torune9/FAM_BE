@@ -1,10 +1,9 @@
 const {User,Sequelize} = require('../../models')
 
 const GetUserController = async (req,res)=>{
+    const { search = '',isActive = true } = req.query;
+
     try{
-        const { 
-            search = '',
-            isActive = true  } = req.query;
         const users = await User.findAll({
             where : {
                 username: {
@@ -30,4 +29,33 @@ const GetUserController = async (req,res)=>{
     }
 }
 
-module.exports = {GetUserController}
+const GetUsernameById = async (req,res)=>{
+    const {id} = req.params
+    try {
+        const username = await User.findOne({
+            where : {
+                id : id
+            },
+            attributes : ['username']
+        })
+        if(username){
+            res.json({
+                data :{
+                    user : username
+                }
+            })
+        }else{
+            res.status(404).json({
+                message : 'User not found'
+            })
+        }
+    } catch (error) {
+        
+        res.status(400).json({
+            message : error
+        })
+    }
+}
+
+
+module.exports = {GetUserController,GetUsernameById}
