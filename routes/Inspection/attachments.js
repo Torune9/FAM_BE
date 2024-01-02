@@ -6,7 +6,7 @@ const getAttachmentInspect = require('../../Controllers/inspect/attachment/getAt
 const auditorAcc = require('../../Services/authorization/auditor')
 const {filters,uploads} = require('../../Services/utils/attachmentsUploads')
 
-attachRouter.post('/asset/attachment/:code',auditorAcc,uploads.array('files'),createAttachment)
+attachRouter.post('/asset/attachment/:id/:code',auditorAcc,uploads.array('files'),createAttachment)
 attachRouter.get('/asset/attachment/:code',getAttachmentInspect)
 attachRouter.use(filters)
 
