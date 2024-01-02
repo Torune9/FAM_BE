@@ -1,29 +1,25 @@
 const {History,Asset, Sequelize} = require('../../../models')
 const createInspect = async (req,res)=>{
-    const {inspector,status,information} = req.body
-    const {code} = req.params
-    const file = req.file
-   try {
-    const assets = await Asset.findOne({
-        where : {
-            asset_code : code
-        }
-    })
-    const existingInspection = await History.findOne({
-        where: {
-            asset_code : code,
-            inspection_date : {
+    const {inspector,status,information,idAttachment} = req.body
+    const {id} = req.params
+    const file = req.files
+    console.log(req.body);
+    console.log('id : ',id);
+    try {
+        const assets = await Asset.findOne({
+            where : {
+                id : id
+            }
+        })
+        const existingInspection = await History.findOne({
+            where: {
+                id : id,
+                inspection_date : {
                 [Sequelize.Op.gt] : new Date()
             }
-         
+            
         }
-      });
-
-     if (!status || !information || !file || !inspector) {
-        return res.status(406).json({
-            message : 'Field cant be empty'
-        })
-     }
+    });
       
     if (assets) {
         const date = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
@@ -32,16 +28,16 @@ const createInspect = async (req,res)=>{
                 { message: 'The inspection has been carried out, please wait one week' }
                 );
         }else{
+            await History.create({
+                asset_code  :assets.asset_code,
+                name : assets.name,
+                status : status,
+                inspection_date: date,
+                assetId : id,
+                attachmentId : idAttachment,
+                information : information
+            })
         }
-        await History.create({
-            asset_code  :assets.asset_code,
-            name : assets.name,
-            status : status,
-            inspector : inspector,
-            information :information,
-            inspection_date: date,
-            file : file.filename
-        })
     
         return res.json({
           message : 'inspection has been created',
