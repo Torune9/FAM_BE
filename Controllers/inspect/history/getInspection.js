@@ -1,4 +1,4 @@
-const {History, Asset,Attachment,Sequelize} = require('../../../models')
+const {History,Attachment,Sequelize} = require('../../../models')
 
 const getInspection = async (req,res)=>{
     try {
@@ -9,11 +9,6 @@ const getInspection = async (req,res)=>{
                     [Sequelize.Op.like]  : `%${search}%`
                 },
             },
-            include : [{
-                model : Attachment,
-                attributes  :['asset_code','id','inspector','findings','file'],
-                as : 'attachments'
-            }]
         })
         res.json({
             message : 'Ok',
