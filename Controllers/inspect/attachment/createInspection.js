@@ -2,7 +2,7 @@ const { Attachment, Asset, History, Sequelize } = require("../../../models");
 
 const createAttachment = async (req, res) => {
   try {
-    const { inspector, information, status } = req.body;
+    const { inspector, information, status,statusCode } = req.body;
     console.log(req.body);
     const files = req.files;
     const { id, code } = req.params;
@@ -16,7 +16,7 @@ const createAttachment = async (req, res) => {
     });
     const existingInspection = await History.findOne({
       where: {
-        assetId: id,
+        attachmentId: id,
         inspection_date: {
           [Sequelize.Op.gt]: new Date(),
         },
@@ -53,7 +53,7 @@ const createAttachment = async (req, res) => {
         name: assets.name,
         status: status,
         inspection_date: date,
-        assetId: id,
+        statusCode : statusCode,
         attachmentId: id,
         inspector: inspector,
         information: information,
