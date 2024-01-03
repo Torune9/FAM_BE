@@ -13,8 +13,8 @@ module.exports = {
     queryInterface.addColumn('Histories','attachmentId',{
       type : Sequelize.INTEGER
     }),
-    queryInterface.addColumn('Histories','assetId',{
-      type : Sequelize.INTEGER
+    queryInterface.addColumn('Histories','statusCode',{
+      type : Sequelize.STRING
     }),
     queryInterface.addColumn('Histories','inspector',{
       type : Sequelize.STRING
