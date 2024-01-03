@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({History,Asset_Category,Attachment}) {
       this.hasMany(History,{
-        foreignKey : 'assetId',
+        foreignKey : 'attachmentId',
       })
 
       this.belongsTo(Asset_Category,{
