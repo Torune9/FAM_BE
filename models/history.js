@@ -12,29 +12,28 @@ module.exports = (sequelize, DataTypes) => {
     static associate({Asset,status_category,Attachment}) {
       // define association here
      this.belongsTo(Asset,{
-      foreignKey :'id'
+      foreignKey :'attachmentId',
      })
 
      this.belongsTo(status_category,{
-      foreignKey : 'status',
-      sourceKey : 'status'
+      foreignKey : 'statusCode',
+      sourceKey : 'statusCode'
      })
      
-     this.hasMany(Attachment,{
-       foreignKey : 'asset_code',
-       sourceKey : 'asset_code',
-       as : 'attachments'
+     this.belongsTo(Attachment,{
+       foreignKey : 'attachmentId',
+       targetKey : 'attachmentId'
       })
     }
   }
   History.init({
-    assetId : DataTypes.INTEGER,
     asset_code: DataTypes.STRING,
     name : DataTypes.STRING,
     status: DataTypes.STRING,
     inspection_date :DataTypes.DATE,
     inspector : DataTypes.STRING,
     attachmentId : DataTypes.INTEGER,
+    statusCode : DataTypes.STRING,
     information : DataTypes.STRING
   }, {
     sequelize,
