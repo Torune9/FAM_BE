@@ -15,11 +15,13 @@ const manageUser = async (req,res)=>{
             
             const existFile = fs.existsSync(`uploads/${users.img}`) 
 
-            if (users.img && existFile && file) {
+            if (users.img && existFile) {
                 fs.unlink(`uploads/${users.img}`,(error)=>console.log(error))
             }
+            if (file) {
+                users.img  = file.filename
+            }
             
-            users.img  = file.filename
             users.username = !username ? users.username : username
             users.email = !email ? users.email : email
             await users.save()
