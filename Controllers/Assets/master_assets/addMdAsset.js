@@ -39,6 +39,7 @@ const AddMdAsset = async (req,res)=>{
         }
 
     } catch (error) {
+        console.log(error);
         for (const err of error.errors){
             res.status(409).json({
                 error: err.message,
