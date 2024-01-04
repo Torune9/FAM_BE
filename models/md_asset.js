@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Asset_Category}) {
       this.belongsTo(Asset_Category,{
-        foreignKey : 'MdAssetId',
+      foreignKey : 'category_code',
+      targetKey : 'category_code'
       })
     }
   }
