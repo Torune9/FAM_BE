@@ -5,12 +5,12 @@ const ejs = require('ejs')
 const path = require('path')
 
 const ForgotController = async (req,res)=>{
+    const users = await User.findAll()
+    const {email} = req.body
+    const user = users.find((user)=>user.email == email)
+    const randomBytes = crypto.randomBytes(4);
+    const token = parseInt(randomBytes.toString('hex'), 16);
     try{
-        const users = await User.findAll()
-        const {email} = req.body
-        const user = users.find((user)=>user.email == email)
-        const randomBytes = crypto.randomBytes(4);
-        const token = parseInt(randomBytes.toString('hex'), 16);
 
         if(user){
         const expToken = new Date(Date.now() + 900000)
