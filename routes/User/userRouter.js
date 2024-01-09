@@ -4,9 +4,9 @@ const {upload,filter} = require('../../Services/utils/imageUploads')
 const ForgotContoller = require('../../Controllers/Action/ForgotController')
 const {ResetController,sendLink} = require('../../Controllers/Action/ResetController')
 const {GetUserController,GetUsernameById} = require('../../Controllers/Action/GetUserController')
-const updateUserController = require('../../Controllers/User/UpdateUserController')
+const UpdateUserRole= require('../../Controllers/User/UpdateUserRole')
 const DeleteController = require('../../Controllers/User/DeleteUserController')
-const{ manageUser,getImage} = require('../../Controllers/User/UserImageController')
+const{ manageUser,getImage} = require('../../Controllers/User/UserUpdateController')
 
 userRouter.get('/api/listUser',GetUserController)
 
@@ -14,7 +14,7 @@ userRouter.get('/api/image/:id',getImage)
 
 userRouter.get('/api/username/:id',GetUsernameById)
 
-userRouter.put('/api/update/:id',updateUserController.updateUserController)
+userRouter.put('/api/update/:id',UpdateUserRole)
 
 userRouter.delete('/api/delete',DeleteController.DeleteController)
 
