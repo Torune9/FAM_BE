@@ -16,9 +16,6 @@ module.exports = {
     queryInterface.addColumn('Histories','statusCode',{
       type : Sequelize.STRING
     }),
-    queryInterface.addColumn('Histories','inspector',{
-      type : Sequelize.STRING
-    }),
     queryInterface.addColumn('Histories','information',{
       type : Sequelize.STRING
     }),
