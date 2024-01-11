@@ -16,6 +16,9 @@ module.exports = {
       asset_code: {
         type: Sequelize.STRING,
       },
+      status : {
+        type : Sequelize.STRING
+      },
       inspector: {
         type: Sequelize.STRING
       },
