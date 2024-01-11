@@ -14,14 +14,18 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail =  async (option) => {
-  const info = await transporter.sendMail({
-    from: 'example@test.com',
-    to: option.email,
-    subject: "Here your link reset password",
-    text: option.resetPassword,
-    html : option.layout
-  });
-  console.log("Message sent: %s", info.messageId);
+  try {   
+    const info = await transporter.sendMail({
+      from: 'example@test.com',
+      to: option.email,
+      subject: "Here your link reset password",
+      text: option.resetPassword,
+      html : option.layout
+    });
+    console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = sendEmail
