@@ -8,17 +8,17 @@ const ForgotController = async (req,res)=>{
     const users = await User.findAll()
     const {email} = req.body
     const user = users.find((user)=>user.email == email)
-    const randomBytes = crypto.randomBytes(4);
-    const token = parseInt(randomBytes.toString('hex'), 16);
+    const randomBytes = crypto.randomBytes(4)
+    const token = parseInt(randomBytes.toString('hex'), 16)
+    const pathLayout = path.join(__dirname,'../../views/layoutEmail.ejs')
+    const expToken = new Date(Date.now() + 900000)
     try{
 
         if(user){
-        const expToken = new Date(Date.now() + 900000)
         user.reset_token = token
         user.exp_reset_token = expToken 
         user.save()
         const urlReset = `${req.protocol}://${req.get('host')}/user/newPassword/${user.reset_token}`
-        const pathLayout = path.join(__dirname,'../../views/layoutEmail.ejs')
         const layout = await ejs.renderFile(pathLayout,{
             url : urlReset,
             email : user.email
@@ -43,7 +43,10 @@ const ForgotController = async (req,res)=>{
     }
 
     }catch(err){
-            console.log(err);
+            console.log(err)
+            res.status(500).json({
+                message : 'Internal server error'
+            })
     }
     
 }
