@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     inspector: DataTypes.STRING,
     attachments : DataTypes.ARRAY(DataTypes.STRING),
     information : DataTypes.STRING,
-    attachmentId : DataTypes.INTEGER
+    attachmentId : DataTypes.INTEGER,
+    status : DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Attachment',
