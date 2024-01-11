@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
      })
 
      this.belongsTo(status_category,{
-      foreignKey : 'statusCode',
-      sourceKey : 'statusCode'
+      foreignKey : 'status',
+      targetKey : 'status'
      })
      
      this.belongsTo(Attachment,{
@@ -31,7 +31,6 @@ module.exports = (sequelize, DataTypes) => {
     name : DataTypes.STRING,
     status: DataTypes.STRING,
     inspection_date :DataTypes.DATE,
-    inspector : DataTypes.STRING,
     attachmentId : DataTypes.INTEGER,
     statusCode : DataTypes.STRING,
     information : DataTypes.STRING
