@@ -1,18 +1,26 @@
 const { Attachment, Asset, History, Sequelize } = require("../../../models");
 
 const createAttachment = async (req, res) => {
+  const { inspector, information, status,statusCode } = req.body;
+  const files = req.files;
+  const { id, code } = req.params;
+  const date = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+  const filename = files.map((file) => {
+    return file.filename;
+  });
+  const data = {
+    asset_code: code,
+    attachmentId: id,
+    inspector: inspector,
+    information: information,
+    attachments: filename,
+    status : status
+  };
   try {
-    const { inspector, information, status,statusCode } = req.body;
-    console.log(req.body);
-    const files = req.files;
-    const { id, code } = req.params;
     const assets = await Asset.findOne({
       where: {
         id: id,
       },
-    });
-    const filename = files.map((file) => {
-      return file.filename;
     });
     const existingInspection = await History.findOne({
       where: {
@@ -22,13 +30,6 @@ const createAttachment = async (req, res) => {
         },
       },
     });
-    const data = {
-      asset_code: code,
-      attachmentId: id,
-      inspector: inspector,
-      information: information,
-      attachments: filename,
-    };
     if (!assets) {
       return res.status(404).json({
         message: "Asset not found",
@@ -47,18 +48,16 @@ const createAttachment = async (req, res) => {
           message: "The inspection has been carried out, please wait one week",
         });
     } else {
-      const date = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+      await Attachment.create(data);
       await History.create({
+        name : assets.name,
         asset_code: assets.asset_code,
-        name: assets.name,
         status: status,
         inspection_date: date,
         statusCode : statusCode,
         attachmentId: id,
-        inspector: inspector,
-        information: information,
+        information : information
       });
-      await Attachment.create(data);
       res.json({
         message: "Inspection has been created",
         file: files,
