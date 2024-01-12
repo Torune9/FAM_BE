@@ -1,4 +1,4 @@
-const {History,Attachment,Sequelize} = require('../../../models')
+const {History,Sequelize} = require('../../../models')
 
 const getInspection = async (req,res)=>{
     try {
