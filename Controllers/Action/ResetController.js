@@ -1,10 +1,14 @@
 const {User} = require('../../models')
 const bcrypt = require('bcrypt')
 const ResetController = async (req,res)=>{
+    const {token} = req.params
+    const {newPassword} = req.body
     try{
-        const data = await User.findAll()
-        const {newPassword} = req.body
-        const user = data.find((user)=>req.params.token == user.reset_token)
+        const user = await User.findOne({
+            where : {
+                reset_token : token
+            }
+        })
 
         if (!newPassword) {
             return res.status(404).json({
@@ -20,17 +24,20 @@ const ResetController = async (req,res)=>{
                 user.reset_token = null
                 await user.save()
                     return res.render('closeTab',{
+                    tittle : 'Thank you',
                     message : `Thank you,The password has been changed, you can close this tab`,
                     code : res.statusCode
                 })
             }else{
                 return res.status(408).render('closeTab',{
+                    tittle : 'Not Ok',
                     message : 'Request Time Out',
                     code : res.statusCode
                 })
             }
         }else{
             return res.status(406).render('closeTab',{
+                    tittle : 'Not Ok',
                     message : 'Invalid Token',
                     code: res.statusCode
                 })
