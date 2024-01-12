@@ -17,30 +17,30 @@ const ResetController = async (req,res)=>{
         }
 
         if(user){
-            if(user.exp_reset_token > new Date())
-            {
+
+            if(user.exp_reset_token > new Date()){
+                
                 const hasNewPassword = await bcrypt.hash(newPassword,10)
                 user.password = hasNewPassword
-                user.reset_token = null
-                await user.save()
-                    return res.render('closeTab',{
-                    tittle : 'Thank you',
+                res.render('closeTab',{
+                    tittle :'Ok',
                     message : `Thank you,The password has been changed, you can close this tab`,
                     code : res.statusCode
                 })
+                user.reset_token = null
+
+                return await user.save()
+
+
             }else{
-                return res.status(408).render('closeTab',{
-                    tittle : 'Not Ok',
-                    message : 'Request Time Out',
-                    code : res.statusCode
+                return res.status(408).json({
+                    message : 'Request timed out'
                 })
             }
         }else{
-            return res.status(406).render('closeTab',{
-                    tittle : 'Not Ok',
-                    message : 'Invalid Token',
-                    code: res.statusCode
-                })
+           return res.status(400).json({
+                message : 'Invalid token'
+           })
         }
 
 
@@ -53,11 +53,33 @@ const ResetController = async (req,res)=>{
    
 }
 
-const sendLink = (req,res)=>{
-    res.render('resetPassword',{
-            token : req.params.token
+const sendLink = async (req,res)=>{
+    const {token} = req.params
+    const user = await User.findOne({
+        where : {
+            reset_token : token
         }
-    )
+    })
+    if (user) {
+        if (user.exp_reset_token > new Date()) {
+            res.render('resetPassword',{
+                    token : token
+                }
+            )
+        }else{
+            return res.status(408).render('closeTab',{
+                tittle : 'Not Ok',
+                message : 'Request Timed Out',
+                code : res.statusCode
+            })
+        }
+    }else{
+        return res.status(406).render('closeTab',{
+            tittle : 'Not Ok',
+            message : 'Invalid Token',
+            code: res.statusCode
+        })
+    }
 }
 
 
