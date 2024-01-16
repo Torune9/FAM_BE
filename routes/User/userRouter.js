@@ -4,7 +4,7 @@ const {upload,filter} = require('../../Services/utils/imageUploads')
 const ForgotContoller = require('../../Controllers/Action/ForgotController')
 const {ResetController,sendLink} = require('../../Controllers/Action/ResetController')
 const {GetUserController,GetUsernameById} = require('../../Controllers/Action/GetUserController')
-const UpdateUserRole= require('../../Controllers/User/UpdateUserRole')
+const UpdateUserRole= require('../../Controllers/User/ManageAccount/UpdateUserRole')
 const DeleteController = require('../../Controllers/User/DeleteUserController')
 const{ manageUser,getImage} = require('../../Controllers/User/UserUpdateController')
 

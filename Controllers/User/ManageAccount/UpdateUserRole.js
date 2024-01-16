@@ -1,4 +1,4 @@
-const {Admin,User} = require('../../models')
+const {Admin,User} = require('../../../models')
 
 const UpdateUserRole= async (req,res)=>{
     try{
@@ -32,9 +32,7 @@ const UpdateUserRole= async (req,res)=>{
                 users.updatedAt = new Date()
                 users.save()
                 return res.json({
-                    message : `Role ${users.username} menjadi ${users.role_id}`,
-                    status : "Updated",
-                    updatedAt : users.updatedAt
+                    message : `Role ${users.username} change to ${users.role_id}`
                 }) 
             }
         }
