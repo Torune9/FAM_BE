@@ -20,12 +20,11 @@ const register = async (req,res)=>{
         })
     }
 
-    if (existUser) {
-       return res.status(400).json({
-            message : 'User already exist'
-        })
-    }
-
+    // if (existUser) {
+    //    return res.status(400).json({
+    //         message : 'User already exist'
+    //     })
+    // }
         const user = {
             username : username,
             password:hasPw,
@@ -38,10 +37,9 @@ const register = async (req,res)=>{
             status : res.statusCode,
         })
     }catch(error){
-        return res.send(error)
-           return res.status(400).json({
-                error  :error
-            })
+        return res.status(500).json({
+            error : error.errors ? error.errors : 'Internal Server Error'
+        })
     }
 }
 
