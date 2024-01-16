@@ -2,10 +2,10 @@ const {Attachment,History} = require('../../../models')
 
 const getAttachmentInspect = async (req,res)=>{
     try {
-        const {code} = req.params
+        const {id} = req.params
         const attachments = await Attachment.findAll({
             where : {
-                asset_code :code
+                id :id
             }
         })
         res.json({
