@@ -20,11 +20,11 @@ const register = async (req,res)=>{
         })
     }
 
-    // if (existUser) {
-    //    return res.status(400).json({
-    //         message : 'User already exist'
-    //     })
-    // }
+    if (existUser) {
+       return res.status(400).json({
+            message : 'User already exist'
+        })
+    }
         const user = {
             username : username,
             password:hasPw,
