@@ -10,6 +10,7 @@ module.exports = {
     queryInterface.addColumn('Users','exp_reset_token',{
       type : Sequelize.DATE,
     }),
+    queryInterface.addIndex('Users',['username'])
    ])
   },
 

@@ -49,6 +49,7 @@ module.exports = {
     queryInterface.addColumn('Assets','category_code',{
       type : Sequelize.STRING,
     }),
+    queryInterface.addIndex('Assets',['name']),
   ])
   },
 

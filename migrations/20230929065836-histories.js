@@ -19,6 +19,7 @@ module.exports = {
     queryInterface.addColumn('Histories','information',{
       type : Sequelize.STRING
     }),
+    queryInterface.addIndex('Histories',['name'])
 
    ])
   },
