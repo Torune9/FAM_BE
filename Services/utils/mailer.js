@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-
 // "use strict";
 
 const transporter = nodemailer.createTransport({
@@ -22,12 +21,11 @@ const sendEmail =  async (option) => {
       text: option.resetPassword,
       html : option.layout
     });
-    console.log("Message sent: %s", info.messageId);
+    console.log("Message sent: %s", info.messageId)
   } catch (error) {
-    console.log(error);
+    console.error("Error sending email: ", error)
+    throw error
   }
 }
 
 module.exports = sendEmail
-
-
