@@ -11,7 +11,5 @@ assetRouter.post('/asset',AddAsset)
 assetRouter.put('/asset/:id',UpdateAsset)
 assetRouter.delete('/asset/:id',DeleteSoftAsset)
 assetRouter.put('/asset/:id/restore',RestoreAsset)
-assetRouter.get('/uploads/:file')
-
 
 module.exports = assetRouter
