@@ -15,7 +15,7 @@ const manageUser = async (req,res)=>{
             
             const existFile = fs.existsSync(`uploads/${users.img}`) 
 
-            if (users.img && existFile) {
+            if (users.img && existFile && file) {
                 fs.unlink(`uploads/${users.img}`,(error)=>console.log(error))
             }
             if (file) {
