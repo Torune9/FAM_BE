@@ -8,10 +8,14 @@ const UpdateMdAsset = require('../../Controllers/Assets/master_assets/updateMdAs
 const DeleteSoftMdAsset = require('../../Controllers/Assets/master_assets/deleteMdAsset')
 const restoreMdAsset = require('../../Controllers/Assets/master_assets/restoreMdAsset')
 
-masterRouter.get('/master-asset',authenticateAdmin,getMdAssetList)
+masterRouter.get('/master-assets',authenticateAdmin,getMdAssetList)
+
 masterRouter.post('/master-asset',authenticateAdmin,AddMdAsset)
+
 masterRouter.put('/master-asset/:id',authenticateAdmin,UpdateMdAsset)
+
 masterRouter.delete('/master-asset/:id',DeleteSoftMdAsset)
+
 masterRouter.put('/master-asset/:id/restore',restoreMdAsset)
 
 module.exports = masterRouter

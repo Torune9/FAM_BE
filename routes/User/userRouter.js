@@ -8,13 +8,13 @@ const UpdateUserRole= require('../../Controllers/User/ManageAccount/updateUserRo
 const DeleteController = require('../../Controllers/User/DeleteUserController')
 const{ manageUser,getImage} = require('../../Controllers/User/UserUpdateController')
 
-userRouter.get('/api/listUser',GetUserController)
+userRouter.get('/api/users',GetUserController)
 
 userRouter.get('/api/image/:id',getImage)
 
 userRouter.get('/api/username/:id',GetUsernameById)
 
-userRouter.put('/api/update/:id',UpdateUserRole)
+userRouter.put('/api/role/:id/update',UpdateUserRole)
 
 userRouter.delete('/api/delete',DeleteController.DeleteController)
 
@@ -23,8 +23,8 @@ userRouter.post('/api/forgot',ForgotContoller.ForgotController)
 userRouter.post ('/api/image/:id/upload',upload.single('image'),manageUser)
 userRouter.use(filter)
 
-userRouter.post('/api/new-password/:token',ResetController)
+userRouter.post('/api/password/:token',ResetController)
 
-userRouter.get('/user/newPassword/:token',sendLink)
+userRouter.get('/user/password/:token',sendLink)
 
 module.exports = userRouter

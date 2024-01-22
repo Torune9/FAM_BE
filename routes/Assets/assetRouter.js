@@ -6,10 +6,14 @@ const  DeleteSoftAsset = require('../../Controllers/Assets/assets/deleteAsset')
 const  UpdateAsset = require('../../Controllers/Assets/assets/updateAsset')
 const  RestoreAsset = require('../../Controllers/Assets/assets/restoreAsset')
 
-assetRouter.get('/asset',GetAsset)
+assetRouter.get('/assets',GetAsset)
+
 assetRouter.post('/asset',AddAsset)
+
 assetRouter.put('/asset/:id',UpdateAsset)
+
 assetRouter.delete('/asset/:id',DeleteSoftAsset)
+
 assetRouter.put('/asset/:id/restore',RestoreAsset)
 
 module.exports = assetRouter
