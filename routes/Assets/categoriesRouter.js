@@ -8,12 +8,12 @@ const  RestoreCategory= require('../../Controllers/Assets/categories/restoreCate
 
 categoryRouter.get('/asset/categories',getCategories)
 
-categoryRouter.post('/asset/categories',AddCategories)
+categoryRouter.post('/asset/category',AddCategories)
 
-categoryRouter.put('/asset/categories/:id',UpdateCategoryAsset)
+categoryRouter.put('/asset/category/:id',UpdateCategoryAsset)
 
-categoryRouter.delete('/asset/categories/:id',DeleteSoftCategory)
+categoryRouter.delete('/asset/category/:id',DeleteSoftCategory)
 
-categoryRouter.get('/asset/categories/:id',RestoreCategory)
+categoryRouter.get('/asset/category/:id',RestoreCategory)
 
 module.exports = categoryRouter
